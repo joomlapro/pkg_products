@@ -16,6 +16,5 @@
 	<update>http://www.atomtech.com.br/update</update>
 	<files folder="packages">
 		<file type="component" id="products">com_products</file>
-		<file type="module" id="products" client="site">mod_products</file>
 	</files>
 </extension>
