@@ -1,0 +1,25 @@
+/* Toolbar */
+.icon-48-products, .icon-48-product {
+	background: url(../images/toolbar/product.png) no-repeat left;
+}
+
+.icon-48-clients, .icon-48-client {
+	background: url(../images/toolbar/client.png) no-repeat left;
+}
+
+.icon-48-orders, .icon-48-order {
+	background: url(../images/toolbar/order.png) no-repeat left;
+}
+
+/* Misc */
+fieldset.blue {
+	background-color: #ccffcc !important;
+}
+
+input.right {
+	text-align: right;
+}
+
+input.center {
+	text-align: center;
+}

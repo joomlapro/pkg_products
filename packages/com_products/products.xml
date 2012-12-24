@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0" method="upgrade">
+	<name>com_products</name>
+	<author>Bruno Batista</author>
+	<creationDate>November 2012</creationDate>
+	<copyright>Copyright (C) 2012 AtomTech, Inc. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>bruno@atomtech.com.br</authorEmail>
+	<authorUrl>http://www.atomtech.com.br</authorUrl>
+	<version>3.0.0</version>
+	<description>COM_PRODUCTS_XML_DESCRIPTION</description>
+	<!-- Runs on install -->
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<!-- Runs on uninstall -->
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<files folder="site">
+		<filename>controller.php</filename>
+		<filename>index.html</filename>
+		<filename>metadata.xml</filename>
+		<filename>router.php</filename>
+		<filename>products.php</filename>
+		<folder>controllers</folder>
+		<folder>helpers</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+	<languages folder="site">
+		<language tag="pt-BR">language/pt-BR/pt-BR.com_products.ini</language>
+	</languages>
+	<administration>
+		<menu img="../media/com_products/images/menu/product.png">com_products</menu>
+		<submenu>
+			<!--
+				Note that all & must be escaped to &amp; for the file to be valid
+				XML and be parsed by the installer
+			-->
+			<menu link="option=com_products&amp;view=products" view="products" img="../media/com_products/images/menu/product.png" alt="Products/Products">com_products_products</menu>
+			<menu link="option=com_products&amp;view=orders" view="orders" img="../media/com_products/images/menu/order.png" alt="Products/Orders">com_products_orders</menu>
+			<menu link="option=com_products&amp;view=clients" view="clients" img="../media/com_products/images/menu/client.png" alt="Products/Clients">com_products_clients</menu>
+			<menu link="option=com_categories&amp;extension=com_products" view="categories" img="class:category" alt="products/Categories">com_products_categories</menu>
+		</submenu>
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>products.php</filename>
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+		<languages folder="admin">
+			<language tag="pt-BR">language/pt-BR/pt-BR.com_products.ini</language>
+			<language tag="pt-BR">language/pt-BR/pt-BR.com_products.sys.ini</language>
+		</languages>
+	</administration>
+</extension>
