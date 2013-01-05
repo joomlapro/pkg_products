@@ -13,7 +13,7 @@
 				<option value="F">PLG_USER_PRODUCTS_CLIENT_OPTION_FEMALE</option>
 				<option value="M">PLG_USER_PRODUCTS_CLIENT_OPTION_MALE</option>
 			</field>
-			<field id="birthday" name="birthday" type="birthday" class="date" format="%d-%m-%Y" label="PLG_USER_PRODUCTS_CLIENT_FIELD_BIRTHDAY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_BIRTHDAY_DESC" />
+			<field id="birthday" name="birthday" type="birthday" class="date" format="%d/%m/%Y" label="PLG_USER_PRODUCTS_CLIENT_FIELD_BIRTHDAY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_BIRTHDAY_DESC" />
 			<field id="phone" name="phone" type="tel" class="phone" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_PHONE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_PHONE_DESC" />
 			<field id="mobile" name="mobile" type="tel" class="phone" filter="string" label="PLG_USER_PRODUCTS_CLIENT_FIELD_MOBILE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_MOBILE_DESC" />
 			<field id="address_zipcode" name="address_zipcode" type="zip" class="zip" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ZIP_CODE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ZIP_CODE_DESC" />
@@ -25,14 +25,14 @@
 			</field>
 		</fieldset>
 		<fieldset name="company" label="PLG_USER_PRODUCTS_CLIENT_COMPANY_LABEL" addfieldpath="/administrator/components/com_products/models/fields">
-			<field id="company" name="company" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_DESC" />
-			<field id="fantasy" name="fantasy" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_FANTASY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_FANTASY_DESC" />
+			<field id="company_name" name="company_name" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_NAME_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_NAME_DESC" />
+			<field id="trade_name" name="trade_name" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_TRADE_NAME_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_TRADE_NAME_DESC" />
 			<field id="cnpj" name="cnpj" type="text" class="cnpj" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_CNPJ_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_CNPJ_DESC" />
 			<field id="ie" name="ie" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_IE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_IE_DESC" />
-			<field id="activity" name="activity" type="activity" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_DESC">
+			<field id="activity_id" name="activity_id" type="activity" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_DESC">
 				<option value="">JSELECT</option>
 			</field>
-			<field id="website" name="website" type="url" label="PLG_USER_PRODUCTS_CLIENT_FIELD_WEBSITE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_WEBSITE_DESC" />
+			<field id="website" name="website" type="url" filter="url" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_WEBSITE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_WEBSITE_DESC" />
 		</fieldset>
 	</fields>
 </form>

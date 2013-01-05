@@ -92,9 +92,9 @@ class PlgUserProducts_Client extends JPlugin
 				JHtml::register('users.url', array(__CLASS__, 'url'));
 			}
 
-			if (!JHtml::isRegistered('users.calendar'))
+			if (!JHtml::isRegistered('users.birthday'))
 			{
-				JHtml::register('users.calendar', array(__CLASS__, 'calendar'));
+				JHtml::register('users.birthday', array(__CLASS__, 'birthday'));
 			}
 
 			if (!JHtml::isRegistered('users.type'))
@@ -156,7 +156,7 @@ class PlgUserProducts_Client extends JPlugin
 	}
 
 	/**
-	 * Calendar Field.
+	 * Birthday Field.
 	 *
 	 * @param   int  $value  The value.
 	 *
@@ -164,16 +164,17 @@ class PlgUserProducts_Client extends JPlugin
 	 *
 	 * @since   3.0
 	 */
-	public static function calendar($value)
+	public static function birthday($value)
 	{
-		if (empty($value))
+		// Initialiase variables.
+		$db = JFactory::getDbo();
+
+		if (!$value)
 		{
-			return JHtml::_('users.value', $value);
+			$value = $db->getNullDate();
 		}
-		else
-		{
-			return JHtml::_('date', $value, null, null);
-		}
+
+		return date('d/m/Y', strtotime($value));
 	}
 
 	/**
@@ -326,11 +327,11 @@ class PlgUserProducts_Client extends JPlugin
 			'address_district',
 			'address_city',
 			'address_state',
-			'company',
-			'fantasy',
+			'company_name',
+			'trade_name',
 			'cnpj',
 			'ie',
-			'activity',
+			'activity_id',
 			'website',
 		);
 
@@ -418,7 +419,7 @@ class PlgUserProducts_Client extends JPlugin
 					$values = array();
 
 					// Format birthday.
-					$data['profile']['birthday'] = preg_replace('/(\d{2})-(\d{2})-(\d{4})/', "\\3-\\2-\\1", $data['profile']['birthday']);
+					$data['profile']['birthday'] = preg_replace('/(\d{2})\/(\d{2})\/(\d{4})/', "\\3-\\2-\\1", $data['profile']['birthday']);
 
 					// Iterate over the object variables to build the query fields and values.
 					foreach ($data['profile'] as $k => $v)
@@ -446,8 +447,6 @@ class PlgUserProducts_Client extends JPlugin
 					$query->insert($db->quoteName('#__products_clients'));
 					$query->columns(array($db->quoteName('user_id'), implode(', ', $fields)));
 					$query->values($db->quote($userId) . ', ' . implode(', ', $values));
-
-					var_dump($query->dump());
 
 					// Set the query and execute the insert.
 					$db->setQuery($query);

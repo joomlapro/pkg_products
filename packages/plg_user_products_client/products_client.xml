@@ -77,12 +77,12 @@
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
 				</field>
-				<field name="register-require_company" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_DESC">
+				<field name="register-require_company_name" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_NAME_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_NAME_DESC">
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
 				</field>
-				<field name="register-require_fantasy" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_FANTASY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_FANTASY_DESC">
+				<field name="register-require_trade_name" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_TRADE_NAME_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_TRADE_NAME_DESC">
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
@@ -97,7 +97,7 @@
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
 				</field>
-				<field name="register-require_activity" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_DESC">
+				<field name="register-require_activity_id" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_DESC">
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
@@ -164,12 +164,12 @@
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
 				</field>
-				<field name="profile-require_company" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_DESC">
+				<field name="profile-require_company_name" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_NAME_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_NAME_DESC">
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
 				</field>
-				<field name="profile-require_fantasy" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_FANTASY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_FANTASY_DESC">
+				<field name="profile-require_trade_name" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_TRADE_NAME_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_TRADE_NAME_DESC">
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
@@ -184,7 +184,7 @@
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
 				</field>
-				<field name="profile-require_activity" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_DESC">
+				<field name="profile-require_activity_id" type="list" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_DESC">
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
 					<option value="0">JDISABLED</option>
