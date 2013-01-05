@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -221,6 +221,7 @@ class ProductsViewProduct extends JViewLegacy
 
 		$this->document->setTitle($title);
 
+		// Configure the document meta-keywords.
 		if ($this->item->metadesc)
 		{
 			$this->document->setDescription($this->item->metadesc);
@@ -230,6 +231,7 @@ class ProductsViewProduct extends JViewLegacy
 			$this->document->setDescription($this->params->get('menu-meta_description'));
 		}
 
+		// Configure the document meta-keywords.
 		if ($this->item->metakey)
 		{
 			$this->document->setMetadata('keywords', $this->item->metakey);
@@ -239,9 +241,15 @@ class ProductsViewProduct extends JViewLegacy
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
+		// Configure the document robots.
 		if ($this->params->get('robots'))
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
+		}
+
+		if ($app->getCfg('MetaAuthor') == '1')
+		{
+			$this->document->setMetaData('author', $this->item->author);
 		}
 
 		$mdata = $this->item->metadata->toArray();

@@ -6,9 +6,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
+// Get the current user object.
 $user = JFactory::getUser();
 ?>
 <div class="row-fluid">
@@ -16,7 +17,13 @@ $user = JFactory::getUser();
 		<div class="sidebar-nav">
 			<ul class="nav nav-list">
 				<li class="nav-header"><?php echo JText::_('COM_PRODUCTS_HEADER_SUBMENU'); ?></li>
-				<li class="active"><a href="<?php echo $this->baseurl; ?>"><?php echo JText::_('COM_CPANEL_LINK_DASHBOARD'); ?></a></li>
+				<li class="active"><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products"><?php echo JText::_('COM_PRODUCTS_LINK_DASHBOARD'); ?></a></li>
+				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=products"><?php echo JText::_('COM_PRODUCTS_LINK_PRODUCTS'); ?></a></li>
+				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=orders"><?php echo JText::_('COM_PRODUCTS_LINK_ORDERS'); ?></a></li>
+				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=clients"><?php echo JText::_('COM_PRODUCTS_LINK_CLIENTS'); ?></a></li>
+				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=fields"><?php echo JText::_('COM_PRODUCTS_LINK_FIELDS'); ?></a></li>
+				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=activities"><?php echo JText::_('COM_PRODUCTS_LINK_ACTIVITIES'); ?></a></li>
+				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_categories&amp;extension=com_products"><?php echo JText::_('COM_PRODUCTS_LINK_CATEGORIES'); ?></a></li>
 			</ul>
 		</div>
 	</div>

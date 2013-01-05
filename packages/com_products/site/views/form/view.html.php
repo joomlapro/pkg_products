@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -38,7 +38,7 @@ class ProductsViewForm extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Initialiase variables.
-		$app		 = JFactory::getApplication();
+		$app         = JFactory::getApplication();
 		$user        = JFactory::getUser();
 
 		// Get model data.
@@ -66,11 +66,9 @@ class ProductsViewForm extends JViewLegacy
 		{
 			// Create shortcuts.
 			$item->metadata = json_decode($item->metadata);
-			$item->images   = json_decode($item->images);
 
 			$tmp = new stdClass;
 			$tmp->metadata = $item->metadata;
-			$tmp->images   = $item->images;
 			$form->bind($tmp);
 		}
 
@@ -82,7 +80,7 @@ class ProductsViewForm extends JViewLegacy
 		}
 
 		// Create a shortcut to the parameters.
-		$params	= &$state->params;
+		$params = &$state->params;
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
@@ -154,19 +152,21 @@ class ProductsViewForm extends JViewLegacy
 
 		$this->document->setTitle($title);
 
-		$pathway = $app->getPathWay();
 		$pathway->addItem($title, '');
 
+		// Configure the document meta-description.
 		if ($this->params->get('menu-meta_description'))
 		{
 			$this->document->setDescription($this->params->get('menu-meta_description'));
 		}
 
+		// Configure the document meta-keywords.
 		if ($this->params->get('menu-meta_keywords'))
 		{
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
+		// Configure the document robots.
 		if ($this->params->get('robots'))
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));

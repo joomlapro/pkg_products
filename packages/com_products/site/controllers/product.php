@@ -6,11 +6,11 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
- * Fazer
+ * Product controller for Products Component.
  *
  * @package     Products
  * @subpackage  com_products
@@ -19,11 +19,17 @@ defined('_JEXEC') or die;
 class ProductsControllerProduct extends JControllerForm
 {
 	/**
+	 * The URL view item variable.
+	 *
+	 * @var     string
 	 * @since   3.0
 	 */
 	protected $view_item = 'form';
 
 	/**
+	 * The URL view list variable.
+	 *
+	 * @var     string
 	 * @since   3.0
 	 */
 	protected $view_list = 'categories';
@@ -31,7 +37,7 @@ class ProductsControllerProduct extends JControllerForm
 	/**
 	 * Method to add a new record.
 	 *
-	 * @return  boolean  True if the product can be added, false if not.
+	 * @return  boolean True if the article can be added, false if not.
 	 *
 	 * @since   3.0
 	 */
@@ -55,21 +61,20 @@ class ProductsControllerProduct extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		// Initialiase variables.
 		$user       = JFactory::getUser();
-		$categoryId = JArrayHelper::getValue($data, 'catid', $this->input->getInt('catid'), 'int');
+		$categoryId = JArrayHelper::getValue($data, 'catid', $this->input->getInt('id'), 'int');
 		$allow      = null;
 
 		if ($categoryId)
 		{
-			// If the category has been passed in the data or URL check it.
-			$allow = $user->authorise('core.create', 'com_products.category.' . $categoryId);
+			// If the category has been passed in the URL check it.
+			$allow = $user->authorise('core.create', $this->option . '.category.' . $categoryId);
 		}
 
 		if ($allow === null)
 		{
 			// In the absense of better information, revert to the component permissions.
-			return parent::allowAdd();
+			return parent::allowAdd($data);
 		}
 		else
 		{
@@ -78,7 +83,7 @@ class ProductsControllerProduct extends JControllerForm
 	}
 
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Method to check if you can add a new record.
 	 *
 	 * @param   array   $data  An array of input data.
 	 * @param   string  $key   The name of the key for the primary key.
@@ -89,47 +94,24 @@ class ProductsControllerProduct extends JControllerForm
 	 */
 	protected function allowEdit($data = array(), $key = 'id')
 	{
-		// Initialiase variables.
-		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
-		$user     = JFactory::getUser();
-		$userId   = $user->get('id');
-		$asset    = 'com_products.product.' . $recordId;
+		$recordId   = (int) isset($data[$key]) ? $data[$key] : 0;
+		$categoryId = 0;
 
-		// Check general edit permission first.
-		if ($user->authorise('core.edit', $asset))
+		if ($recordId)
 		{
-			return true;
+			$categoryId = (int) $this->getModel()->getItem($recordId)->catid;
 		}
 
-		// Fallback on edit.own.
-		// First test if the permission is available.
-		if ($user->authorise('core.edit.own', $asset))
+		if ($categoryId)
 		{
-			// Now test the owner is the user.
-			$ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
-
-			if (empty($ownerId) && $recordId)
-			{
-				// Need to do a lookup from the model.
-				$record = $this->getModel()->getItem($recordId);
-
-				if (empty($record))
-				{
-					return false;
-				}
-
-				$ownerId = $record->created_by;
-			}
-
-			// If the owner matches 'me' then do the test.
-			if ($ownerId == $userId)
-			{
-				return true;
-			}
+			// The category has been set. Check the category permissions.
+			return JFactory::getUser()->authorise('core.edit', $this->option . '.category.' . $categoryId);
 		}
-
-		// Since there is no asset tracking, revert to the component permissions.
-		return parent::allowEdit($data, $key);
+		else
+		{
+			// Since there is no asset tracking, revert to the component permissions.
+			return parent::allowEdit($data, $key);
+		}
 	}
 
 	/**
@@ -141,7 +123,7 @@ class ProductsControllerProduct extends JControllerForm
 	 *
 	 * @since   3.0
 	 */
-	public function cancel($key = 'a_id')
+	public function cancel($key = 'p_id')
 	{
 		parent::cancel($key);
 
@@ -159,9 +141,8 @@ class ProductsControllerProduct extends JControllerForm
 	 *
 	 * @since   3.0
 	 */
-	public function edit($key = null, $urlVar = 'a_id')
+	public function edit($key = null, $urlVar = 'p_id')
 	{
-		// Initialiase variables.
 		$result = parent::edit($key, $urlVar);
 
 		return $result;
@@ -178,9 +159,8 @@ class ProductsControllerProduct extends JControllerForm
 	 *
 	 * @since   3.0
 	 */
-	public function getModel($name = 'form', $prefix = '', $config = array('ignore_request' => true))
+	public function getModel($name = 'Form', $prefix = 'ProductsModel', $config = array('ignore_request' => true))
 	{
-		// Initialiase variables.
 		$model = parent::getModel($name, $prefix, $config);
 
 		return $model;
@@ -196,39 +176,15 @@ class ProductsControllerProduct extends JControllerForm
 	 *
 	 * @since   3.0
 	 */
-	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'a_id')
+	protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
 	{
-		// Need to override the parent method completely.
-		$tmpl   = $this->input->get('tmpl');
-		$layout = $this->input->get('layout', 'edit');
-		$append = '';
-
-		// Setup redirect info.
-		if ($tmpl)
-		{
-			$append .= '&tmpl=' . $tmpl;
-		}
-
-		$append .= '&layout=edit';
-
-		if ($recordId)
-		{
-			$append .= '&' . $urlVar . '=' . $recordId;
-		}
-
-		// Initialiase variables.
+		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
 		$itemId = $this->input->getInt('Itemid');
 		$return = $this->getReturnPage();
-		$catId  = $this->input->getInt('catid', null, 'get');
 
 		if ($itemId)
 		{
 			$append .= '&Itemid=' . $itemId;
-		}
-
-		if ($catId)
-		{
-			$append .= '&catid=' . $catId;
 		}
 
 		if ($return)
@@ -250,7 +206,6 @@ class ProductsControllerProduct extends JControllerForm
 	 */
 	protected function getReturnPage()
 	{
-		// Initialiase variables.
 		$return = $this->input->get('return', null, 'base64');
 
 		if (empty($return) || !JUri::isInternal(base64_decode($return)))
@@ -275,7 +230,6 @@ class ProductsControllerProduct extends JControllerForm
 	 */
 	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{
-		// Initialiase variables.
 		$task = $this->getTask();
 
 		if ($task == 'save')
@@ -294,12 +248,8 @@ class ProductsControllerProduct extends JControllerForm
 	 *
 	 * @since   3.0
 	 */
-	public function save($key = null, $urlVar = 'a_id')
+	public function save($key = null, $urlVar = 'p_id')
 	{
-		// Load the backend helper for filtering.
-		require_once JPATH_ADMINISTRATOR . '/components/com_products/helpers/products.php';
-
-		// Initialiase variables.
 		$result = parent::save($key, $urlVar);
 
 		// If ok, redirect to the return page.
@@ -309,39 +259,5 @@ class ProductsControllerProduct extends JControllerForm
 		}
 
 		return $result;
-	}
-
-	/**
-	 * Method to save a vote.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.0
-	 */
-	public function vote()
-	{
-		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-
-		// Initialiase variables.
-		$user_rating = $this->input->getInt('user_rating', -1);
-
-		if ($user_rating > -1)
-		{
-			// Initialiase variables.
-			$url = $this->input->getString('url', '');
-			$id = $this->input->getInt('id', 0);
-			$viewName = $this->input->getString('view', $this->default_view);
-			$model = $this->getModel($viewName);
-
-			if ($model->storeVote($id, $user_rating))
-			{
-				$this->setRedirect($url, JText::_('COM_PRODUCTS_PRODUCT_VOTE_SUCCESS'));
-			}
-			else
-			{
-				$this->setRedirect($url, JText::_('COM_PRODUCTS_PRODUCT_VOTE_FAILURE'));
-			}
-		}
 	}
 }

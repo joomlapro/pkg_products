@@ -2,27 +2,27 @@
 /**
  * @package     Products
  * @subpackage  com_products
- * @copyright   Copyright (C) 2012 AtomTech, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2013 AtomTech, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
- * Clients list controller class.
+ * Activities list controller class.
  *
  * @package     Products
  * @subpackage  com_products
  * @since       3.0
  */
-class ProductsControllerClients extends JControllerAdmin
+class ProductsControllerActivities extends JControllerAdmin
 {
 	/**
 	 * @var     string  The prefix to use with controller messages.
 	 * @since   3.0
 	 */
-	protected $text_prefix = 'COM_PRODUCTS_CLIENTS';
+	protected $text_prefix = 'COM_PRODUCTS_ACTIVITIES';
 
 	/**
 	 * Method to get a model object, loading it if required.
@@ -35,7 +35,7 @@ class ProductsControllerClients extends JControllerAdmin
 	 *
 	 * @since   3.0
 	 */
-	public function getModel($name = 'Client', $prefix = 'ProductsModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Activity', $prefix = 'ProductsModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
 

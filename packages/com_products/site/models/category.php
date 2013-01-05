@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -105,8 +105,9 @@ class ProductsModelCategory extends JModelList
 	 */
 	protected function getListQuery()
 	{
+		// Initialiase variables.
 		$user   = JFactory::getUser();
-		$groups = implode(',', $user->getAuthorisedViewLevels());
+		$groups = implode(', ', $user->getAuthorisedViewLevels());
 
 		// Create a new query object.
 		$db     = $this->getDbo();
@@ -155,9 +156,9 @@ class ProductsModelCategory extends JModelList
 		$query->where('a.state != -2');
 
 		// Filter by start and end dates.
-		$nullDate = $db->Quote($db->getNullDate());
+		$nullDate = $db->quote($db->getNullDate());
 		$date = JFactory::getDate();
-		$nowDate = $db->Quote($date->toSql());
+		$nowDate = $db->quote($date->toSql());
 
 		if ($this->getState('filter.publish_date'))
 		{
@@ -168,7 +169,7 @@ class ProductsModelCategory extends JModelList
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where('a.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
+			$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ', ' . $db->quote('*') . ')');
 		}
 
 		// Add the list ordering clause.
@@ -191,6 +192,7 @@ class ProductsModelCategory extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
+		// Initialiase variables.
 		$app    = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_products');
 
@@ -222,6 +224,7 @@ class ProductsModelCategory extends JModelList
 		$id = $app->input->get('id', 0, 'int');
 		$this->setState('category.id', $id);
 
+		// Get the current user object.
 		$user = JFactory::getUser();
 
 		if ((!$user->authorise('core.edit.state', 'com_products')) &&  (!$user->authorise('core.edit', 'com_products')))
@@ -250,6 +253,7 @@ class ProductsModelCategory extends JModelList
 	{
 		if (!is_object($this->_item))
 		{
+			// Initialiase variables.
 			$app = JFactory::getApplication();
 			$menu = $app->getMenu();
 			$active = $menu->getActive();

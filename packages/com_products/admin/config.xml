@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset name="component" label="COM_PRODUCTS_COMPONENT_LABEL" description="COM_PRODUCTS_COMPONENT_DESC" addfieldpath="/administrator/components/com_products/models/fields">
-
+		<field name="show_price" type="radio" class="btn-group" default="0" filter="integer" label="COM_PRODUCTS_FIELD_SHOW_PRICE_LABEL" description="COM_PRODUCTS_FIELD_SHOW_PRICE_DESC">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_products" section="component" />

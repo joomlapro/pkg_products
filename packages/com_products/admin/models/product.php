@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -19,7 +19,9 @@ defined('_JEXEC') or die;
 class ProductsModelProduct extends JModelAdmin
 {
 	/**
-	 * @var     string  The prefix to use with controller messages.
+	 * The prefix to use with controller messages.
+	 *
+	 * @var     string
 	 * @since   3.0
 	 */
 	protected $text_prefix = 'COM_PRODUCTS_PRODUCT';
@@ -42,6 +44,7 @@ class ProductsModelProduct extends JModelAdmin
 				return;
 			}
 
+			// Get the current user object.
 			$user = JFactory::getUser();
 
 			if ($record->catid)
@@ -66,6 +69,7 @@ class ProductsModelProduct extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
+		// Get the current user object.
 		$user = JFactory::getUser();
 
 		// Check for existing product.
@@ -108,8 +112,6 @@ class ProductsModelProduct extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app = JFactory::getApplication();
-
 		// Get the form.
 		$form = $this->loadForm('com_products.product', 'product', array('control' => 'jform', 'load_data' => $loadData));
 
@@ -148,6 +150,53 @@ class ProductsModelProduct extends JModelAdmin
 		}
 
 		return $form;
+	}
+
+	/**
+	 * Method to allow derived classes to preprocess the form.
+	 *
+	 * @param   JForm   $form   A JForm object.
+	 * @param   mixed   $data   The data expected for the form.
+	 * @param   string  $group  The name of the plugin group to import (defaults to "content").
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	{
+		$addForm = new SimpleXMLElement('<form />');
+		$fields = $addForm->addChild('fields');
+		$fields->addAttribute('name', 'fields');
+
+		$fieldset = $fields->addChild('fieldset');
+		$fieldset->addAttribute('name', 'jfields');
+		$fieldset->addAttribute('label', 'COM_PRODUCTS_FIELDSET_FIELDS');
+
+		// Get an instance of the generic fields model.
+		$model = JModelLegacy::getInstance('Fields', 'ProductsModel', array('ignore_request' => true));
+		$model->setState('list.ordering', 'a.ordering');
+		$model->setState('list.direction', 'asc');
+
+		foreach ($model->getItems() as $item)
+		{
+			$params = new JRegistry;
+			$params->loadString($item->params);
+
+			$field = $fieldset->addChild('field');
+			$field->addAttribute('name',        $item->name);
+			$field->addAttribute('type',        $item->type);
+			$field->addAttribute('default',     $item->default);
+			$field->addAttribute('class',       $params->get('class'));
+			$field->addAttribute('required',    $item->required);
+			$field->addAttribute('label',       $item->label);
+			$field->addAttribute('description', $item->description);
+		}
+
+		$form->load($addForm, false);
+
+		// Trigger the default form events.
+		parent::preprocessForm($form, $data, $group);
 	}
 
 	/**
@@ -195,10 +244,10 @@ class ProductsModelProduct extends JModelAdmin
 			$registry->loadString($item->metadata);
 			$item->metadata = $registry->toArray();
 
-			// Convert the images field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->images);
-			$item->images = $registry->toArray();
+			// Convert value to money format.
+			$item->price = number_format($item->price, 2, ',', '.');
+
+			$item->fields = self::getFields($item->id);
 		}
 
 		return $item;
@@ -248,8 +297,147 @@ class ProductsModelProduct extends JModelAdmin
 			}
 		}
 
+		// Convert value to db decimal format.
+		$table->price = str_replace(array('.', ','), array('', '.'), $table->price);
+
 		// Increment the content version number.
 		$table->version++;
+	}
+
+	/**
+	 * Method to save the form data.
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success, False on error.
+	 *
+	 * @since   3.0
+	 */
+	public function save($data)
+	{
+		// Initialiase variables.
+		$dispatcher = JEventDispatcher::getInstance();
+		$table = $this->getTable();
+		$key = $table->getKeyName();
+		$pk = (!empty($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
+		$isNew = true;
+
+		if ($data['fields'])
+		{
+			$fields = (array) $data['fields'];
+			unset($data['fields']);
+		}
+
+		// Include the content plugins for the on save events.
+		JPluginHelper::importPlugin('content');
+
+		// Allow an exception to be thrown.
+		try
+		{
+			// Load the row if saving an existing record.
+			if ($pk > 0)
+			{
+				$table->load($pk);
+				$isNew = false;
+			}
+
+			// Bind the data.
+			if (!$table->bind($data))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Prepare the row for saving.
+			$this->prepareTable($table);
+
+			// Check the data.
+			if (!$table->check())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Trigger the onContentBeforeSave event.
+			$result = $dispatcher->trigger($this->event_before_save, array($this->option . '.' . $this->name, $table, $isNew));
+
+			if (in_array(false, $result, true))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Store the data.
+			if (!$table->store())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Clean the cache.
+			$this->cleanCache();
+
+			// Trigger the onContentAfterSave event.
+			$dispatcher->trigger($this->event_after_save, array($this->option . '.' . $this->name, $table, $isNew));
+		}
+		catch (Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
+
+		$pkName = $table->getKeyName();
+
+		if (isset($table->$pkName))
+		{
+			$this->setState($this->getName() . '.id', $table->$pkName);
+		}
+
+		$this->setState($this->getName() . '.new', $isNew);
+
+		$properties = $table->getProperties(1);
+		$value = JArrayHelper::toObject($properties, 'JObject');
+
+		// Update the database.
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// Delete all fields.
+		$query->delete();
+		$query->from($db->quoteName('#__products_fields_values'));
+		$query->where('product_id = ' . (int) $value->id);
+
+		// Set the query and execute the delete.
+		$db->setQuery($query);
+
+		if ($db->execute())
+		{
+			foreach ($fields as $k => $v)
+			{
+				$query->clear();
+
+				// Create the base insert statement.
+				$query->insert($db->quoteName('#__products_fields_values'));
+				$query->columns(array($db->quoteName('product_id'), $db->quoteName('field_name'), $db->quoteName('value')));
+				$query->values($db->quote($value->id) . ', ' . $db->quote($k) . ', ' . $db->quote($v));
+
+				// Set the query and execute the insert.
+				$db->setQuery($query);
+
+				try
+				{
+					$db->execute();
+				}
+				catch (RuntimeException $e)
+				{
+					$this->setError($e->getMessage());
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -267,5 +455,38 @@ class ProductsModelProduct extends JModelAdmin
 		$condition[] = 'catid = ' . (int) $table->catid;
 
 		return $condition;
+	}
+
+	/**
+	 * Method to get the fields values.
+	 *
+	 * @param   int  $id  The id of product.
+	 *
+	 * @return  array
+	 *
+	 * @since   3.0
+	 */
+	protected function getFields($id)
+	{
+		// Initialiase variables.
+		$db     = $this->getDbo();
+		$query  = $db->getQuery(true);
+		$fields = array();
+
+		// Create the base select statement.
+		$query->select('a.field_name AS field, a.value');
+		$query->from($db->quoteName('#__products_fields_values') . ' AS a');
+		$query->where('a.product_id = ' . (int) $id);
+
+		// Set the query and load the result.
+		$db->setQuery($query);
+		$items = $db->loadObjectList();
+
+		foreach ($items as $item)
+		{
+			$fields[$item->field] = $item->value;
+		}
+
+		return $fields;
 	}
 }

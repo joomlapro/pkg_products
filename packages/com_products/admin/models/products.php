@@ -34,6 +34,7 @@ class ProductsModelProducts extends JModelList
 				'id', 'a.id',
 				'name', 'a.name',
 				'alias', 'a.alias',
+				'stock', 'a.stock',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'catid', 'a.catid', 'category_title',
@@ -144,7 +145,7 @@ class ProductsModelProducts extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.catid, a.name, a.alias, a.checked_out, a.checked_out_time' .
+				'a.id, a.catid, a.name, a.alias, a.stock, a.checked_out, a.checked_out_time' .
 				', a.hits' .
 				', a.state, a.access, a.ordering, a.language, a.publish_up, a.publish_down'
 			)

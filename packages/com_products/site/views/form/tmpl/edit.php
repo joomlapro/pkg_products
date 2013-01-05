@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
@@ -31,16 +31,16 @@ $params = $this->state->get('params');
 		}
 	}
 </script>
-<div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
+<div class="products edit item-page<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($params->get('show_page_heading', 1)): ?>
-	<div class="page-header">
-		<h1>
-			<?php echo $this->escape($params->get('page_heading')); ?>
-		</h1>
-	</div>
+		<div class="page-header">
+			<h1>
+				<?php echo $this->escape($params->get('page_heading')); ?>
+			</h1>
+		</div>
 	<?php endif; ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=com_products&a_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+	<form action="<?php echo JRoute::_('index.php?option=com_products&p_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('product.save')">
@@ -56,7 +56,6 @@ $params = $this->state->get('params');
 		<fieldset>
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#editor" data-toggle="tab"><?php echo JText::_('JEDITOR'); ?></a></li>
-				<li><a href="#images" data-toggle="tab"><?php echo JText::_('COM_PRODUCTS_FIELDSET_IMAGES'); ?></a></li>
 				<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('COM_PRODUCTS_FIELDSET_PUBLISHING'); ?></a></li>
 				<li><a href="#language" data-toggle="tab"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></a></li>
 				<?php $fieldSets = $this->form->getFieldsets('metadata');
@@ -72,17 +71,16 @@ $params = $this->state->get('params');
 						<div class="controls"><?php echo $this->form->getInput('name'); ?></div>
 					</div>
 
-					<?php if (is_null($this->item->id)): ?>
 					<div class="control-group">
 						<div class="control-label"><?php echo $this->form->getLabel('alias'); ?></div>
 						<div class="controls"><?php echo $this->form->getInput('alias'); ?></div>
 					</div>
-					<?php endif; ?>
 
 					<div class="control-group">
 						<div class="control-label"><?php echo $this->form->getLabel('ordering'); ?></div>
 						<div class="controls"><?php echo $this->form->getInput('ordering'); ?></div>
 					</div>
+
 					<div class="control-group">
 						<div class="control-label"><?php echo $this->form->getLabel('image'); ?></div>
 						<div class="controls"><?php echo $this->form->getInput('image'); ?></div>
@@ -105,20 +103,6 @@ $params = $this->state->get('params');
 					</div>
 
 					<?php echo $this->form->getInput('description'); ?>
-				</div>
-				<div class="tab-pane" id="images">
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('images'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('images'); ?></div>
-					</div>
-					<?php foreach ($this->form->getGroup('images') as $field): ?>
-						<div class="control-group">
-							<?php if (!$field->hidden): ?>
-								<div class="control-label"><?php echo $field->label; ?></div>
-							<?php endif; ?>
-							<div class="controls"><?php echo $field->input; ?></div>
-						</div>
-					<?php endforeach; ?>
 				</div>
 				<div class="tab-pane" id="publishing">
 					<div class="control-group">

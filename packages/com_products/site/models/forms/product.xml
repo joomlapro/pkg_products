@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-	<fieldset name="details" addfieldpath="/administrator/components/com_PRODUCTS/models/fields">
+	<fieldset name="details" addfieldpath="/administrator/components/com_products/models/fields">
 		<field id="id" name="id" type="hidden" class="inputbox"  size="10" default="0" readonly="true" label="COM_PRODUCTS_ID_LABEL" />
 		<field name="asset_id" type="hidden" filter="unset" />
 		<field id="name" name="name" type="text" class="inputbox span6" size="30" required="true" label="COM_PRODUCTS_FIELD_NAME_LABEL" description="COM_PRODUCTS_FIELD_NAME_DESC" />
 		<field id="alias" name="alias" type="text" class="inputbox" size="45" label="JFIELD_ALIAS_LABEL" description="JFIELD_ALIAS_DESC" />
+		<field id="code" name="code" type="text" class="inputbox" filter="string" size="30" message="COM_PRODUCTS_CODE_MESSAGE" label="COM_PRODUCTS_FIELD_CODE_LABEL" description="COM_PRODUCTS_FIELD_CODE_DESC" />
 		<field id="catid" name="catid" type="categoryedit" extension="com_PRODUCTS" class="inputbox" required="true" addfieldpath="/administrator/components/com_categories/models/fields" label="JCATEGORY" description="JFIELD_CATEGORY_DESC">
 			<option value="">JSELECT</option>
 		</field>
 		<field id="ordering" name="ordering" type="ordering" class="inputbox" label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" />
-		<field id="image" name="image" type="media" directory="products" hide_none="1" size="40" label="COM_PRODUCTS_FIELD_IMAGE_LABEL" description="COM_PRODUCTS_FIELD_IMAGE_DESC" />
 		<field id="size" name="size" type="text" class="inputbox" label="COM_PRODUCTS_FIELD_SIZE_LABEL" description="COM_PRODUCTS_FIELD_SIZE_DESC" />
-		<field id="ingredients" name="ingredients" type="textarea" class="inputbox" rows="3" cols="30" label="COM_PRODUCTS_FIELD_INGREDIENTS_LABEL" description="COM_PRODUCTS_FIELD_INGREDIENTS_DESC" />
+		<field id="stock" name="stock" type="text" class="inputbox" filter="string" size="30" message="COM_PRODUCTS_STOCK_MESSAGE" label="COM_PRODUCTS_FIELD_STOCK_LABEL" description="COM_PRODUCTS_FIELD_STOCK_DESC" />
 		<field id="price" name="price" type="text" class="inputbox" label="COM_PRODUCTS_FIELD_PRICE_LABEL" description="COM_PRODUCTS_FIELD_PRICE_DESC" />
+		<field id="promotion" name="promotion" type="text" class="inputbox" filter="string" size="30" message="COM_PRODUCTS_PROMOTION_MESSAGE" label="COM_PRODUCTS_FIELD_PROMOTION_LABEL" description="COM_PRODUCTS_FIELD_PROMOTION_DESC" />
+		<field id="release" name="release" type="radio" class="btn-group" default="0" filter="integer" label="COM_PRODUCTS_FIELD_RELEASE_LABEL" description="COM_PRODUCTS_FIELD_RELEASE_DESC">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
 		<field id="unit" name="unit" type="text" class="inputbox" label="COM_PRODUCTS_FIELD_UNIT_LABEL" description="COM_PRODUCTS_FIELD_UNIT_DESC" />
+		<field id="ingredients" name="ingredients" type="textarea" class="inputbox" rows="3" cols="30" label="COM_PRODUCTS_FIELD_INGREDIENTS_LABEL" description="COM_PRODUCTS_FIELD_INGREDIENTS_DESC" />
+		<field id="image" name="image" type="media" directory="products" hide_none="1" size="40" label="COM_PRODUCTS_FIELD_IMAGE_LABEL" description="COM_PRODUCTS_FIELD_IMAGE_DESC" />
+		<field id="usage" name="usage" type="editor" buttons="true" hide="pagebreak,readmore" filter="safehtml" asset_id="com_products" label="COM_PRODUCTS_FIELD_USAGE_LABEL" description="COM_PRODUCTS_FIELD_USAGE_DESC" />
 		<field id="description" name="description" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" filter="JComponentHelper::filterText" asset_id="com_products" label="JGLOBAL_DESCRIPTION" description="COM_PRODUCTS_FIELD_DESCRIPTION_DESC" />
 		<field id="state" name="state" type="list" class="inputbox" size="1" default="1" label="JSTATUS" description="JFIELD_PUBLISHED_DESC">
 			<option value="1">JPUBLISHED</option>
@@ -40,26 +48,6 @@
 		<field id="publish_up" name="publish_up" type="calendar" class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" label="JGLOBAL_FIELD_PUBLISH_UP_LABEL" description="JGLOBAL_FIELD_PUBLISH_UP_DESC" />
 		<field id="publish_down" name="publish_down" type="calendar" class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc" label="JGLOBAL_FIELD_PUBLISH_DOWN_LABEL" description="JGLOBAL_FIELD_PUBLISH_DOWN_DESC" />
 	</fieldset>
-	<fields name="images">
-		<field name="image_first" type="media" label="COM_PRODUCTS_FIELD_FIRST_LABEL" description="COM_PRODUCTS_FIELD_FIRST_DESC" />
-		<field name="float_first" type="list" label="COM_PRODUCTS_FLOAT_LABEL" description="COM_PRODUCTS_FLOAT_DESC">
-			<option value="">JGLOBAL_USE_GLOBAL</option>
-			<option value="right">JGLOBAL_RIGHT</option>
-			<option value="left">JGLOBAL_LEFT</option>
-			<option value="none">JFIELD_OPTION_NONE</option>
-		</field>
-		<field name="image_first_alt" type="text" class="inputbox" size="20" label="COM_PRODUCTS_FIELD_IMAGE_ALT_LABEL" description="COM_PRODUCTS_FIELD_IMAGE_ALT_DESC" />
-		<field name="image_first_caption" type="text" class="inputbox" size="20" label="COM_PRODUCTS_FIELD_IMAGE_CAPTION_LABEL" description="COM_PRODUCTS_FIELD_IMAGE_CAPTION_DESC" />
-		<field name="image_second" type="media" label="COM_PRODUCTS_FIELD_SECOND_LABEL" description="COM_PRODUCTS_FIELD_SECOND_DESC" />
-		<field name="float_second" type="list" label="COM_PRODUCTS_FLOAT_LABEL" description="COM_PRODUCTS_FLOAT_DESC">
-			<option value="">JGLOBAL_USE_GLOBAL</option>
-			<option value="right">JGLOBAL_RIGHT</option>
-			<option value="left">JGLOBAL_LEFT</option>
-			<option value="none">JFIELD_OPTION_NONE</option>
-		</field>
-		<field name="image_second_alt" type="text" class="inputbox" size="20" label="COM_PRODUCTS_FIELD_IMAGE_ALT_LABEL" description="COM_PRODUCTS_FIELD_IMAGE_ALT_DESC" />
-		<field name="image_second_caption" type="text" class="inputbox" size="20" label="COM_PRODUCTS_FIELD_IMAGE_CAPTION_LABEL" description="COM_PRODUCTS_FIELD_IMAGE_CAPTION_DESC" />
-	</fields>
 	<fields name="metadata">
 		<fieldset name="jmetadata">
 			<field name="robots" type="list" labelclass="control-label" label="COM_PRODUCTS_FIELD_ROBOTS_LABEL" description="COM_PRODUCTS_FIELD_ROBOTS_DESC">

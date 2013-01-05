@@ -6,11 +6,11 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
- * HTML Cpanel View class for the Products component
+ * HTML View class for the Cpanel component
  *
  * @package     Products
  * @subpackage  com_products
@@ -19,6 +19,8 @@ defined('_JEXEC') or die;
 class ProductsViewCpanel extends JViewLegacy
 {
 	protected $modules = null;
+
+	protected $iconmodules = null;
 
 	/**
 	 * Method to display the view.
@@ -31,12 +33,8 @@ class ProductsViewCpanel extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		// Initialiase variables.
+		// Initialise variables.
 		$input = JFactory::getApplication()->input;
-
-		// Set toolbar items for the page.
-		JToolbarHelper::title(JText::_('COM_PRODUCTS_MANAGER_CPANEL'), 'cpanel.png');
-		JToolBarHelper::help('cpanel', $com = true);
 
 		/*
 		 * Set the template - this will display cpanel.php
@@ -50,6 +48,34 @@ class ProductsViewCpanel extends JViewLegacy
 		// Display the submenu position modules.
 		$this->iconmodules = JModuleHelper::getModules('icon');
 
+		$this->addToolbar();
+
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0
+	 */
+	protected function addToolbar()
+	{
+		// Include dependancies.
+		require_once JPATH_COMPONENT . '/helpers/products.php';
+
+		// Initialise variables.
+		$canDo = ProductsHelper::getActions();
+
+		// Set toolbar items for the page.
+		JToolbarHelper::title(JText::_('COM_PRODUCTS_MANAGER_CPANEL'), 'cpanel.png');
+
+		if ($canDo->get('core.admin'))
+		{
+			JToolbarHelper::preferences('com_products');
+		}
+
+		JToolBarHelper::help('cpanel', $com = true);
 	}
 }

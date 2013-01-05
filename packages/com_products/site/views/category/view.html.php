@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -57,16 +57,6 @@ class ProductsViewCategory extends JViewLegacy
 		{
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
-		}
-
-		if ($category == false)
-		{
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-		}
-
-		if ($parent == false)
-		{
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 		// Check whether category access level allows access.
@@ -200,6 +190,7 @@ class ProductsViewCategory extends JViewLegacy
 
 		$this->document->setTitle($title);
 
+		// Configure the document meta-description.
 		if ($this->category->metadesc)
 		{
 			$this->document->setDescription($this->category->metadesc);
@@ -209,6 +200,7 @@ class ProductsViewCategory extends JViewLegacy
 			$this->document->setDescription($this->params->get('menu-meta_description'));
 		}
 
+		// Configure the document meta-keywords.
 		if ($this->category->metakey)
 		{
 			$this->document->setMetadata('keywords', $this->category->metakey);
@@ -218,6 +210,7 @@ class ProductsViewCategory extends JViewLegacy
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
+		// Configure the document robots.
 		if ($this->params->get('robots'))
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));

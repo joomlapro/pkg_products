@@ -2,8 +2,8 @@
 <extension type="package" version="3.0">
 	<name>Products Package</name>
 	<author>Bruno Batista</author>
-	<creationDate>December 2012</creationDate>
-	<copyright>Copyright (C) 2012 AtomTech, Inc. All rights reserved.</copyright>
+	<creationDate>January 2013</creationDate>
+	<copyright>Copyright (C) 2013 AtomTech, Inc. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>bruno@atomtech.com.br</authorEmail>
 	<authorUrl>http://www.atomtech.com.br</authorUrl>
@@ -16,5 +16,6 @@
 	<update>http://www.atomtech.com.br/update</update>
 	<files folder="packages">
 		<file type="component" id="products">com_products</file>
+		<file type="plugin" id="products" group="user">plg_user_products_client</file>
 	</files>
 </extension>

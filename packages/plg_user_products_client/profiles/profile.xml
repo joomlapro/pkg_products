@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields name="profile">
+		<fieldset name="register" label="PLG_USER_PRODUCTS_CLIENT_REGISTER_LABEL" addfieldpath="/administrator/components/com_products/models/fields">
+			<field id="type" name="type" type="type" default="1" filter="integer" label="PLG_USER_PRODUCTS_CLIENT_FIELD_TYPE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_TYPE_DESC">
+				<option value="1">PLG_USER_PRODUCTS_CLIENT_OPTION_INDIVIDUAL</option>
+				<option value="2">PLG_USER_PRODUCTS_CLIENT_OPTION_CORPORATE</option>
+			</field>
+		</fieldset>
+		<fieldset name="personal" label="PLG_USER_PRODUCTS_CLIENT_PERSONAL_LABEL" addfieldpath="/administrator/components/com_products/models/fields">
+			<field id="cpf" name="cpf" type="text" class="cpf" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_CPF_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_CPF_DESC" />
+			<field id="sex" name="sex" type="radio" filter="string" default="M" label="PLG_USER_PRODUCTS_CLIENT_FIELD_SEX_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_SEX_DESC">
+				<option value="F">PLG_USER_PRODUCTS_CLIENT_OPTION_FEMALE</option>
+				<option value="M">PLG_USER_PRODUCTS_CLIENT_OPTION_MALE</option>
+			</field>
+			<field id="birthday" name="birthday" type="birthday" class="date" format="%d-%m-%Y" label="PLG_USER_PRODUCTS_CLIENT_FIELD_BIRTHDAY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_BIRTHDAY_DESC" />
+			<field id="phone" name="phone" type="tel" class="phone" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_PHONE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_PHONE_DESC" />
+			<field id="mobile" name="mobile" type="tel" class="phone" filter="string" label="PLG_USER_PRODUCTS_CLIENT_FIELD_MOBILE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_MOBILE_DESC" />
+			<field id="address_zipcode" name="address_zipcode" type="zip" class="zip" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ZIP_CODE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ZIP_CODE_DESC" />
+			<field id="address_street" name="address_street" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_STREET_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_STREET_DESC" />
+			<field id="address_district" name="address_district" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_DISTRICT_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_DISTRICT_DESC" />
+			<field id="address_city" name="address_city" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_CITY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_CITY_DESC" />
+			<field id="address_state" name="address_state" type="state" default="DF" label="PLG_USER_PRODUCTS_CLIENT_FIELD_STATE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_STATE_DESC">
+				<option value="">JSELECT</option>
+			</field>
+		</fieldset>
+		<fieldset name="company" label="PLG_USER_PRODUCTS_CLIENT_COMPANY_LABEL" addfieldpath="/administrator/components/com_products/models/fields">
+			<field id="company" name="company" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_COMPANY_DESC" />
+			<field id="fantasy" name="fantasy" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_FANTASY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_FANTASY_DESC" />
+			<field id="cnpj" name="cnpj" type="text" class="cnpj" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_CNPJ_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_CNPJ_DESC" />
+			<field id="ie" name="ie" type="text" filter="string" size="30" label="PLG_USER_PRODUCTS_CLIENT_FIELD_IE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_IE_DESC" />
+			<field id="activity" name="activity" type="activity" label="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_ACTIVITY_DESC">
+				<option value="">JSELECT</option>
+			</field>
+			<field id="website" name="website" type="url" label="PLG_USER_PRODUCTS_CLIENT_FIELD_WEBSITE_LABEL" description="PLG_USER_PRODUCTS_CLIENT_FIELD_WEBSITE_DESC" />
+		</fieldset>
+	</fields>
+</form>

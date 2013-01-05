@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
  *
  * @since   3.0
  */
-function productsBuildRoute(&$query)
+function productsBuildRoute(& $query)
 {
 	$segments = array();
 
@@ -26,7 +26,7 @@ function productsBuildRoute(&$query)
 	$app      = JFactory::getApplication();
 	$menu     = $app->getMenu();
 	$params   = JComponentHelper::getParams('com_products');
-	$advanced = $params->get('sef_advanced_link', 1);
+	$advanced = $params->get('sef_advanced_link', 0);
 
 	// We need a menu item. Either the one specified in the query, or the current active one if none specified
 	if (empty($query['Itemid']))
@@ -38,8 +38,9 @@ function productsBuildRoute(&$query)
 		$menuItem = $menu->getItem($query['Itemid']);
 	}
 
-	$mView = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-	$mId   = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
+	$mView  = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+	$mCatid = (empty($menuItem->query['catid'])) ? null : $menuItem->query['catid'];
+	$mId    = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
 
 	if (isset($query['view']))
 	{
@@ -149,6 +150,7 @@ function productsBuildRoute(&$query)
 
 	return $segments;
 }
+
 /**
  * Parse the segments of a URL.
  *
@@ -167,7 +169,7 @@ function productsParseRoute($segments)
 	$menu     = $app->getMenu();
 	$item     = $menu->getActive();
 	$params   = JComponentHelper::getParams('com_products');
-	$advanced = $params->get('sef_advanced_link', 1);
+	$advanced = $params->get('sef_advanced_link', 0);
 
 	// Count route segments
 	$count = count($segments);
@@ -211,7 +213,7 @@ function productsParseRoute($segments)
 			if ($advanced)
 			{
 				$db = JFactory::getDBO();
-				$query = 'SELECT id FROM #__products WHERE catid = ' . $vars['catid'] . ' AND alias = ' . $db->Quote($segment);
+				$query = 'SELECT id FROM #__products WHERE catid = ' . $vars['catid'] . ' AND alias = ' . $db->quote($segment);
 				$db->setQuery($query);
 				$nid = $db->loadResult();
 			}

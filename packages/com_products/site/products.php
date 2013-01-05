@@ -6,10 +6,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
-// Include dependancies
+// Include dependancies.
 require_once JPATH_COMPONENT . '/helpers/route.php';
 
 // Execute the task.

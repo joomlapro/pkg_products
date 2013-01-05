@@ -6,11 +6,11 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
- * Products Component Icon Helper
+ * Products Component HTML Helper.
  *
  * @static
  * @package     Products
@@ -22,11 +22,8 @@ class JHtmlIcon
 	/**
 	 * Display an create icon for the product.
 	 *
-	 * This icon will not display in a popup window, nor if the product is trashed.
-	 * Edit access checks must be performed in the calling code.
-	 *
-	 * @param   object  $category  The product in question.
-	 * @param   object  $params    The product parameters.
+	 * @param   object  $category  The category in question.
+	 * @param   object  $params    The product parameters
 	 *
 	 * @return  string  The HTML for the product edit icon.
 	 *
@@ -34,11 +31,12 @@ class JHtmlIcon
 	 */
 	public static function create($category, $params)
 	{
+		// Initialiase variables.
 		$uri = JURI::getInstance();
 
-		$url = 'index.php?option=com_products&task=product.add&return=' . base64_encode($uri) . '&a_id=0&catid=' . $category->id;
+		$url = 'index.php?option=com_products&task=product.add&return=' . base64_encode($uri) . '&p_id=0&catid=' . $category->id;
 
-		if ($params->get('show_icons'))
+		if ($params->get('show_icons', 1))
 		{
 			$text = '<i class="icon-plus"></i> ' . JText::_('JNEW') . '&#160;';
 		}
@@ -48,6 +46,7 @@ class JHtmlIcon
 		}
 
 		$button = JHtml::_('link', JRoute::_($url), $text, 'class="btn btn-primary"');
+
 		$output = '<span class="hasTip" title="' . JText::_('COM_PRODUCTS_CREATE_PRODUCT') . '">' . $button . '</span>';
 
 		return $output;
@@ -56,11 +55,8 @@ class JHtmlIcon
 	/**
 	 * Display an email icon for the product.
 	 *
-	 * This icon will not display in a popup window, nor if the product is trashed.
-	 * Edit access checks must be performed in the calling code.
-	 *
 	 * @param   object  $product  The product in question.
-	 * @param   object  $params   The product parameters.
+	 * @param   object  $params   The product parameters
 	 * @param   array   $attribs  Not used??
 	 *
 	 * @return  string  The HTML for the product edit icon.
@@ -70,6 +66,8 @@ class JHtmlIcon
 	public static function email($product, $params, $attribs = array())
 	{
 		require_once JPATH_SITE . '/components/com_mailto/helpers/mailto.php';
+
+		// Initialiase variables.
 		$uri  = JURI::getInstance();
 		$base = $uri->toString(array('scheme', 'host', 'port'));
 		$template = JFactory::getApplication()->getTemplate();
@@ -101,7 +99,7 @@ class JHtmlIcon
 	 * Edit access checks must be performed in the calling code.
 	 *
 	 * @param   object  $product  The product in question.
-	 * @param   object  $params   The product parameters.
+	 * @param   object  $params   The product parameters
 	 * @param   array   $attribs  Not used??
 	 *
 	 * @return  string  The HTML for the product edit icon.
@@ -110,6 +108,7 @@ class JHtmlIcon
 	 */
 	public static function edit($product, $params, $attribs = array())
 	{
+		// Initialiase variables.
 		$user   = JFactory::getUser();
 		$userId = $user->get('id');
 		$uri    = JURI::getInstance();
@@ -139,7 +138,7 @@ class JHtmlIcon
 			return '<span class="hasTip" title="' . htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') . '">' . $button . '</span>';
 		}
 
-		$url = 'index.php?option=com_products&task=product.edit&a_id=' . $product->id . '&return=' . base64_encode($uri);
+		$url = 'index.php?option=com_products&task=product.edit&p_id=' . $product->id . '&return=' . base64_encode($uri);
 
 		if ($product->state == 0)
 		{
@@ -169,11 +168,8 @@ class JHtmlIcon
 	/**
 	 * Display an print popup icon for the product.
 	 *
-	 * This icon will not display in a popup window, nor if the product is trashed.
-	 * Edit access checks must be performed in the calling code.
-	 *
 	 * @param   object  $product  The product in question.
-	 * @param   object  $params   The product parameters.
+	 * @param   object  $params   The product parameters
 	 * @param   array   $attribs  Not used??
 	 *
 	 * @return  string  The HTML for the product edit icon.
@@ -182,6 +178,7 @@ class JHtmlIcon
 	 */
 	public static function print_popup($product, $params, $attribs = array())
 	{
+		// Initialiase variables.
 		$url  = ProductsHelperRoute::getProductRoute($product->slug, $product->catid);
 		$url .= '&tmpl=component&print=1&layout=default&page=' . @ $request->limitstart;
 
@@ -207,11 +204,8 @@ class JHtmlIcon
 	/**
 	 * Display an print screen icon for the product.
 	 *
-	 * This icon will not display in a popup window, nor if the product is trashed.
-	 * Edit access checks must be performed in the calling code.
-	 *
 	 * @param   object  $product  The product in question.
-	 * @param   object  $params   The product parameters.
+	 * @param   object  $params   The product parameters
 	 * @param   array   $attribs  Not used??
 	 *
 	 * @return  string  The HTML for the product edit icon.

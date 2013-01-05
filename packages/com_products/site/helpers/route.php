@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -22,7 +22,7 @@ abstract class ProductsHelperRoute
 	protected static $lookup;
 
 	/**
-	 * Method to get a route configuration for the hello view.
+	 * Method to get a route configuration for the product view.
 	 *
 	 * @param   int  $id     The route of the product.
 	 * @param   int  $catid  The id of the category.
@@ -33,8 +33,9 @@ abstract class ProductsHelperRoute
 	 */
 	public static function getProductRoute($id, $catid)
 	{
+		// Initialiase variables.
 		$needles = array(
-			'product'  => array((int) $id)
+			'product' => array((int) $id)
 		);
 
 		// Create the link
@@ -54,6 +55,10 @@ abstract class ProductsHelperRoute
 		}
 
 		if ($item = self::_findItem($needles))
+		{
+			$link .= '&Itemid=' . $item;
+		}
+		elseif ($item = self::_findItem(array('category' => array(0))))
 		{
 			$link .= '&Itemid=' . $item;
 		}
@@ -80,11 +85,11 @@ abstract class ProductsHelperRoute
 		// Create the link.
 		if ($id)
 		{
-			$link = 'index.php?option=com_products&task=product.edit&w_id=' . $id;
+			$link = 'index.php?option=com_products&task=product.edit&p_id=' . $id;
 		}
 		else
 		{
-			$link = 'index.php?option=com_products&task=product.add&w_id=0';
+			$link = 'index.php?option=com_products&task=product.add&p_id=0';
 		}
 
 		if ($return)
@@ -170,6 +175,7 @@ abstract class ProductsHelperRoute
 	 */
 	protected static function _findItem($needles = null)
 	{
+		// Initialiase variables.
 		$app   = JFactory::getApplication();
 		$menus = $app->getMenu('site');
 
@@ -198,6 +204,10 @@ abstract class ProductsHelperRoute
 						{
 							self::$lookup[$view][$item->query['id']] = $item->id;
 						}
+						else
+						{
+							self::$lookup[$view][] = $item->id;
+						}
 					}
 				}
 			}
@@ -223,7 +233,7 @@ abstract class ProductsHelperRoute
 		{
 			$active = $menus->getActive();
 
-			if ($active)
+			if ($active && $active->component == 'com_products')
 			{
 				return $active->id;
 			}

@@ -2,23 +2,27 @@ jQuery.noConflict();
 
 (function ($) {
 	$(function () {
-		// maskedInput
-		if ($.fn.mask) {
-			$(".date").mask("99-99-9999");
-			$(".date2").mask("9999-99-99");
-			$(".phone").mask("(99) 9999-9999");
-			$(".cnpj").mask("99.999.999/9999-99");
-			$(".cpf").mask("999.999.999-99");
-			$(".zip").mask("99.999-999");
-		}
-
-		// maskMoney
-		if ($.fn.maskMoney) {
-			$(".money").maskMoney({
-				symbol : "R$",
-				decimal : ",",
-				thousands : "."
-			})
-		}
+		// Call the mask.
+		if ($.fn.setMask) {
+			$('.phone').setMask('phone');
+			$('.phone-us').setMask('phone-us');
+			$('.cpf').setMask('cpf');
+			$('.cnpj').setMask('cnpj');
+			$('.date').setMask('date');
+			$('.date-us').setMask('date-us');
+			$('.zip').setMask('cep');
+			$('.time').setMask('time');
+			$('.cc').setMask('cc');
+			$('.integer').setMask('integer');
+			$('.integer-limit5').setMask({
+			    mask: '999.99',
+			    'maxLength': 5,
+			    type: 'reverse'
+			});
+			$('.decimal').setMask('decimal');
+			$('.decimal-us').setMask('decimal-us');
+			$('.signed-decimal').setMask('decimal-us');
+			$('.signed-decimal-us').setMask('decimal-us');
+		};
 	});
 })(jQuery);

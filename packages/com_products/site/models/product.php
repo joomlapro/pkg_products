@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -48,6 +48,7 @@ class ProductsModelProduct extends JModelItem
 		// Load the parameters.
 		$this->setState('params', $params);
 
+		// Get the current user object.
 		$user = JFactory::getUser();
 
 		if ((!$user->authorise('core.edit.state', 'com_products')) &&  (!$user->authorise('core.edit', 'com_products')))
@@ -83,7 +84,7 @@ class ProductsModelProduct extends JModelItem
 				$query = $db->getQuery(true);
 
 				$query->select($this->getState('item.select', 'a.*'));
-				$query->from('#__products AS a');
+				$query->from($db->quoteName('#__products') . ' AS a');
 
 				// Join on category table.
 				$query->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access');
@@ -100,8 +101,8 @@ class ProductsModelProduct extends JModelItem
 				$query->where('a.id = ' . (int) $pk);
 
 				// Filter by start and end dates.
-				$nullDate = $db->Quote($db->getNullDate());
-				$nowDate = $db->Quote(JFactory::getDate()->toSql());
+				$nullDate = $db->quote($db->getNullDate());
+				$nowDate = $db->quote(JFactory::getDate()->toSql());
 
 				// Filter by published state.
 				$published = $this->getState('filter.published');
@@ -144,11 +145,11 @@ class ProductsModelProduct extends JModelItem
 				// Compute selected asset permissions.
 				$user = JFactory::getUser();
 
-				// Technically guest could edit an article, but lets not check that to improve performance a little.
+				// Technically guest could edit an product, but lets not check that to improve performance a little.
 				if (!$user->get('guest'))
 				{
 					$userId = $user->get('id');
-					$asset  = 'com_content.article.' . $data->id;
+					$asset  = 'com_products.product.' . $data->id;
 
 					// Check general edit permission first.
 					if ($user->authorise('core.edit', $asset))

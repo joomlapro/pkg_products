@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 // Base this model on the backend version.
@@ -36,7 +36,7 @@ class ProductsModelForm extends ProductsModelProduct
 		$app = JFactory::getApplication();
 
 		// Load state from the request.
-		$pk = $app->input->getInt('a_id');
+		$pk = $app->input->getInt('p_id');
 		$this->setState('product.id', $pk);
 
 		$this->setState('product.catid', $app->input->getInt('catid'));

@@ -97,8 +97,8 @@ class ProductsViewClients extends JViewLegacy
 	{
 		return array(
 			'u.name' => JText::_('COM_PRODUCTS_HEADING_NAME'),
-			'a.company' => JText::_('COM_PRODUCTS_HEADING_COMPANY'),
-			'a.phone' => JText::_('COM_PRODUCTS_HEADING_PHONE'),
+			'a.company_name' => JText::_('COM_PRODUCTS_HEADING_COMPANY_NAME'),
+			'a.activity_id' => JText::_('COM_PRODUCTS_HEADING_ACTIVITY'),
 			'a.address_city' => JText::_('COM_PRODUCTS_HEADING_ADDRESS_CITY'),
 			'a.address_state' => JText::_('COM_PRODUCTS_HEADING_ADDRESS_STATE'),
 			'a.user_id' => JText::_('JGRID_HEADING_ID'),

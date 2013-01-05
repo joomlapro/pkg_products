@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
@@ -14,18 +14,19 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 // Create shortcuts to some parameters.
 $params  = $this->item->params;
-$images  = json_decode($this->item->images);
 $canEdit = $params->get('access-edit');
 $user    = JFactory::getUser();
 
 // Load the tooltip behavior.
 JHtml::_('behavior.caption');
 ?>
-<div class="product-item<?php echo $this->pageclass_sfx; ?>">
+<div class="products product-item<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($this->params->get('show_page_heading', 1)): ?>
-	<h1>
-		<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h1>
+		<div class="page-header">
+			<h1>
+				<?php echo $this->escape($this->params->get('page_heading')); ?>
+			</h1>
+		</div>
 	<?php endif; ?>
 
 	<?php if (!$this->print): ?>
@@ -65,13 +66,25 @@ JHtml::_('behavior.caption');
 		<div class="span8">
 			<?php echo $this->item->description; ?>
 			<p>
-				<strong><?php echo JText::_('COM_PRODUCTS_SIZE'); ?>:</strong> <?php echo $this->escape($this->item->size); ?><br />
-				<strong><?php echo JText::_('COM_PRODUCTS_UNIT'); ?>:</strong> <?php echo $this->escape($this->item->unit); ?>
+				<?php if ($this->item->size): ?>
+					<strong><?php echo JText::_('COM_PRODUCTS_SIZE'); ?>:</strong> <?php echo $this->escape($this->item->size); ?><br />
+				<?php endif; ?>
+				<?php if ($this->item->unit): ?>
+					<strong><?php echo JText::_('COM_PRODUCTS_UNIT'); ?>:</strong> <?php echo $this->escape($this->item->unit); ?>
+				<?php endif; ?>
 			</p>
-			<h3><?php echo JText::_('COM_PRODUCTS_INGREDIENTS'); ?></h3>
-			<p>
-				<?php echo $this->escape($this->item->ingredients); ?>
-			</p>
+			<?php if ($this->item->ingredients): ?>
+				<h3><?php echo JText::_('COM_PRODUCTS_HEADING_INGREDIENTS'); ?></h3>
+				<p>
+					<?php echo $this->escape($this->item->ingredients); ?>
+				</p>
+			<?php endif; ?>
+			<?php if ($this->item->usage): ?>
+				<h3><?php echo JText::_('COM_PRODUCTS_HEADING_USAGE'); ?></h3>
+				<p>
+					<?php echo $this->item->usage; ?>
+				</p>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

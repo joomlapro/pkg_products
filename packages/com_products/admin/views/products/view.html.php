@@ -162,6 +162,7 @@ class ProductsViewProducts extends JViewLegacy
 			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
 			'a.state' => JText::_('JSTATUS'),
 			'a.name' => JText::_('COM_PRODUCTS_HEADING_NAME'),
+			'a.stock' => JText::_('COM_PRODUCTS_HEADING_STOCK'),
 			'a.access' => JText::_('JGRID_HEADING_ACCESS'),
 			'a.hits' => JText::_('JGLOBAL_HITS'),
 			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),

@@ -5,4 +5,19 @@
 			<![CDATA[COM_PRODUCTS_FEATURED_VIEW_DEFAULT_DESC]]>
 		</message>
 	</layout>
+	<!-- Add fields to the parameters object for the layout. -->
+	<fields name="params">
+		<!-- Advanced options. -->
+		<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS">
+
+		</fieldset>
+		<!-- Product options. -->
+		<fieldset name="product" label="COM_PRODUCTS_FIELDSET_PRODUCTS_LABEL">
+			<field name="type" type="list" class="inputbox" size="1" default="" label="COM_PRODUCTS_FIELD_TYPE_LABEL" description="COM_PRODUCTS_FIELD_TYPE_DESC">
+				<option value="">JOPTION_USE_DEFAULT</option>
+				<option value="1">COM_PRODUCTS_OPTION_PROMOTIONS</option>
+				<option value="2">COM_PRODUCTS_OPTION_RELEASES</option>
+			</field>
+		</fieldset>
+	</fields>
 </metadata>

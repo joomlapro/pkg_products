@@ -49,10 +49,12 @@
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
-			<menu link="option=com_products&amp;view=cpanel" view="cpanel" img="class=cpanel" alt="Products/Cpanel">com_products_cpanel</menu>
-			<menu link="option=com_products&amp;view=products" view="products" img="class=products" alt="Products/Products">com_products_products</menu>
-			<menu link="option=com_products&amp;view=orders" view="orders" img="class=orders" alt="Products/Orders">com_products_orders</menu>
-			<menu link="option=com_products&amp;view=clients" view="clients" img="class=clients" alt="Products/Clients">com_products_clients</menu>
+			<menu link="option=com_products&amp;view=cpanel" view="cpanel" img="class:cpanel" alt="Products/Cpanel">com_products_cpanel</menu>
+			<menu link="option=com_products&amp;view=products" view="products" img="class:products" alt="Products/Products">com_products_products</menu>
+			<menu link="option=com_products&amp;view=orders" view="orders" img="class:orders" alt="Products/Orders">com_products_orders</menu>
+			<menu link="option=com_products&amp;view=clients" view="clients" img="class:clients" alt="Products/Clients">com_products_clients</menu>
+			<menu link="option=com_products&amp;view=fields" view="fields" img="class:fields" alt="Products/Fields">com_products_fields</menu>
+			<menu link="option=com_products&amp;view=activities" view="activities" img="class:activities" alt="Products/Activities">com_products_activities</menu>
 			<menu link="option=com_categories&amp;extension=com_products" view="categories" img="class:category" alt="Products/Categories">com_products_categories</menu>
 		</submenu>
 		<files folder="admin">

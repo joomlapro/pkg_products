@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -21,11 +21,11 @@ class ProductsTableProduct extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabase  &$db  Driver A database connector object
+	 * @param   JDatabase  &$db  Driver A database connector object.
 	 *
 	 * @since   3.0
 	 */
-	public function __construct(&$db)
+	public function __construct(& $db)
 	{
 		parent::__construct('#__products', 'id', $db);
 	}
@@ -33,11 +33,11 @@ class ProductsTableProduct extends JTable
 	/**
 	 * Overloaded bind function to pre-process the params.
 	 *
-	 * @param   array  $array   Named array
+	 * @param   array  $array   Named array.
 	 * @param   mixed  $ignore  An optional array or space separated list of properties
 	 *                          to ignore while binding. [optional]
 	 *
-	 * @return  null|string  null is operation was satisfactory, otherwise returns an error
+	 * @return  null|string  Null is operation was satisfactory, otherwise returns an error.
 	 *
 	 * @see     JTable:bind
 	 * @since   3.0
@@ -58,13 +58,6 @@ class ProductsTableProduct extends JTable
 			$array['metadata'] = (string) $registry;
 		}
 
-		if (isset($array['images']) && is_array($array['images']))
-		{
-			$registry = new JRegistry;
-			$registry->loadArray($array['images']);
-			$array['images'] = (string) $registry;
-		}
-
 		return parent::bind($array, $ignore);
 	}
 
@@ -78,14 +71,14 @@ class ProductsTableProduct extends JTable
 	 */
 	public function check()
 	{
-		// Check for valid name
+		// Check for valid name.
 		if (trim($this->name) == '')
 		{
 			$this->setError(JText::_('COM_PRODUCTS_ERR_TABLES_NAME'));
 			return false;
 		}
 
-		// Check for existing name
+		// Check for existing name.
 		$query = 'SELECT id FROM #__products WHERE name = ' . $this->_db->Quote($this->name) . ' AND catid = ' . (int) $this->catid;
 		$this->_db->setQuery($query);
 
@@ -97,7 +90,7 @@ class ProductsTableProduct extends JTable
 			return false;
 		}
 
-		// Set alias
+		// Set alias.
 		if (empty($this->alias))
 		{
 			$this->alias = $this->name;
@@ -129,19 +122,19 @@ class ProductsTableProduct extends JTable
 			$after_clean = JString::str_ireplace($bad_characters, "", $this->metakey);
 
 			// Create array using commas as delimiter.
-			$keys = explode(',', $after_clean);
+			$keys = explode(', ', $after_clean);
 			$clean_keys = array();
 
 			foreach ($keys as $key)
 			{
 				if (trim($key))
 				{
-					// Ignore blank keywords
+					// Ignore blank keywords.
 					$clean_keys[] = trim($key);
 				}
 			}
 
-			// Put array back together delimited by ", "
+			// Put array back together delimited by ", ".
 			$this->metakey = implode(", ", $clean_keys);
 		}
 
@@ -159,12 +152,13 @@ class ProductsTableProduct extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
+		// Initialiase variables.
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
 
 		if ($this->id)
 		{
-			// Existing item
+			// Existing item.
 			$this->modified    = $date->toSql();
 			$this->modified_by = $user->get('id');
 		}
@@ -195,7 +189,7 @@ class ProductsTableProduct extends JTable
 			$this->publish_down = $this->_db->getNullDate();
 		}
 
-		// Verify that the alias is unique
+		// Verify that the alias is unique.
 		$table = JTable::getInstance('Product', 'ProductsTable');
 
 		if ($table->load(array('alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
@@ -204,19 +198,13 @@ class ProductsTableProduct extends JTable
 			return false;
 		}
 
-		// Check for exists image.
-		if (trim($this->image) == '')
-		{
-			$this->image = 'media/com_products/images/no_image.jpg';
-		}
-
 		// Attempt to store the user data.
 		return parent::store($updateNulls);
 	}
 
 	/**
 	 * Method to set the publishing state for a row or list of rows in the database
-	 * table.  The method respects checked out rows by other users and will attempt
+	 * table. The method respects checked out rows by other users and will attempt
 	 * to checkin rows that it can after adjustments are made.
 	 *
 	 * @param   mixed    $pks     An optional array of primary key values to update.  If not
@@ -226,10 +214,11 @@ class ProductsTableProduct extends JTable
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @since   1.0.4
+	 * @since   3.0
 	 */
 	public function publish($pks = null, $state = 1, $userId = 0)
 	{
+		// Initialiase variables.
 		$k = $this->_tbl_key;
 
 		// Sanitize input.

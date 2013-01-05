@@ -6,7 +6,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// No direct access.
 defined('_JEXEC') or die;
 
 /**
@@ -27,8 +27,14 @@ class ProductsHelper
 	 *
 	 * @since   3.0
 	 */
-	public static function addSubmenu($vName = 'products')
+	public static function addSubmenu($vName = 'cpanel')
 	{
+		JHtmlSidebar::addEntry(
+			JText::_('COM_PRODUCTS_SUBMENU_CPANEL'),
+			'index.php?option=com_products&view=cpanel',
+			$vName == 'cpanel'
+		);
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_PRODUCTS_SUBMENU_PRODUCTS'),
 			'index.php?option=com_products&view=products',
@@ -45,6 +51,18 @@ class ProductsHelper
 			JText::_('COM_PRODUCTS_SUBMENU_CLIENTS'),
 			'index.php?option=com_products&view=clients',
 			$vName == 'clients'
+		);
+
+		JHtmlSidebar::addEntry(
+			JText::_('COM_PRODUCTS_SUBMENU_FIELDS'),
+			'index.php?option=com_products&view=fields',
+			$vName == 'fields'
+		);
+
+		JHtmlSidebar::addEntry(
+			JText::_('COM_PRODUCTS_SUBMENU_ACTIVITIES'),
+			'index.php?option=com_products&view=activities',
+			$vName == 'activities'
 		);
 
 		JHtmlSidebar::addEntry(
@@ -94,5 +112,73 @@ class ProductsHelper
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Get a list of filter options for the activities.
+	 *
+	 * @return  array  An array of JHtmlOption elements.
+	 *
+	 * @return  3.0
+	 */
+	public static function getActivityOptions()
+	{
+		// Initialize variables.
+		$options = array();
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('a.id AS value, a.name AS text');
+		$query->from($db->quoteName('#__products_activities') . ' AS a');
+		$query->order('a.ordering');
+
+		// Get the options.
+		$db->setQuery($query);
+
+		try
+		{
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(500, $e->getMessage());
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Get a list of filter options for the address_states.
+	 *
+	 * @return  array  An array of JHtmlOption elements.
+	 *
+	 * @return  3.0
+	 */
+	public static function getStateOptions()
+	{
+		// Initialize variables.
+		$options = array();
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('a.prefix AS value, a.name AS text');
+		$query->from($db->quoteName('#__products_address_states') . ' AS a');
+		$query->order('a.id');
+
+		// Get the options.
+		$db->setQuery($query);
+
+		try
+		{
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(500, $e->getMessage());
+		}
+
+		return $options;
 	}
 }

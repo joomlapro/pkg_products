@@ -33,9 +33,9 @@ class ProductsModelClients extends JModelList
 			$config['filter_fields'] = array(
 				'user_id', 'a.user_id',
 				'name', 'u.name',
+				'activity_id', 'a.activity_id',
 				'username', 'u.username',
-				'company', 'a.company',
-				'phone', 'a.phone',
+				'company_name', 'a.company_name',
 				'address_city', 'a.address_city',
 				'address_state', 'a.address_state',
 			);
@@ -120,11 +120,15 @@ class ProductsModelClients extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.user_id, a.company' .
+				'a.user_id, a.company_name' .
 				', a.phone, a.address_city, a.address_state'
 			)
 		);
 		$query->from($db->quoteName('#__products_clients') . ' AS a');
+
+		// Join over the activities.
+		$query->select('ac.name AS activity_name');
+		$query->join('LEFT', $db->quoteName('#__products_activities') . ' AS ac ON ac.id = a.activity_id');
 
 		// Join over the users.
 		$query->select('u.name, u.username, u.email');

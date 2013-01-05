@@ -12,6 +12,9 @@ defined('_JEXEC') or die;
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
+// Load the backend helper.
+require_once JPATH_ADMINISTRATOR . '/components/com_products/helpers/mask.php';
+
 // Load the tooltip behavior.
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
@@ -87,19 +90,22 @@ $sortFields = $this->getSortFields();
 						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_NAME', 'u.name', $listDirn, $listOrder); ?>
 					</th>
 					<th width="15%" class="nowrap hidden-phone">
-						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_COMPANY', 'a.company', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_COMPANY_NAME', 'a.company_name', $listDirn, $listOrder); ?>
 					</th>
 					<th width="5%" class="nowrap hidden-phone">
-						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_PHONE', 'a.phone', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_ACTIVITY', 'a.activity_id', $listDirn, $listOrder); ?>
+					</th>
+					<th width="80px" class="nowrap hidden-phone">
+						<?php echo JText::_('COM_PRODUCTS_HEADING_PHONE'); ?>
 					</th>
 					<th width="10%" class="nowrap hidden-phone">
 						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_ADDRESS_CITY', 'a.address_city', $listDirn, $listOrder); ?>
 					</th>
-					<th width="5%" class="nowrap hidden-phone">
+					<th width="1%" class="nowrap hidden-phone">
 						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_ADDRESS_STATE', 'a.address_state', $listDirn, $listOrder); ?>
 					</th>
 					<th width="1%" class="nowrap center hidden-phone">
-						<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.user_id', $listDirn, $listOrder); ?>
 					</th>
 				</tr>
 			</thead>
@@ -120,7 +126,7 @@ $sortFields = $this->getSortFields();
 					</td>
 					<td class="nowrap">
 						<?php if ($canEdit): ?>
-							<a href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id=' . (int) $item->user_id); ?>"><?php echo $this->escape($item->name); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id=' . (int) $item->user_id); ?>" target="_blank"><?php echo $this->escape($item->name); ?></a>
 						<?php else: ?>
 							<?php echo $this->escape($item->name); ?>
 						<?php endif; ?>
@@ -129,10 +135,13 @@ $sortFields = $this->getSortFields();
 						</span>
 					</td>
 					<td class="small hidden-phone">
-						<?php echo $this->escape($item->company); ?>
+						<?php echo $this->escape($item->company_name); ?>
 					</td>
-					<td class="small hidden-phone">
-						<?php echo $this->escape($item->phone); ?>
+					<td class="small nowrap hidden-phone">
+						<?php echo $this->escape($item->activity_name); ?>
+					</td>
+					<td class="small nowrap hidden-phone">
+						<?php echo MaskHelper::mask($item->phone, 'phone'); ?>
 					</td>
 					<td class="small hidden-phone">
 						<?php echo $this->escape($item->address_city); ?>
