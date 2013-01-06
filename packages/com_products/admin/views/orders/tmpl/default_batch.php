@@ -1,2 +1,0 @@
-jheader
-jadminlayoutlist_batch

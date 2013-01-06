@@ -23,6 +23,13 @@ $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $canOrder  = $user->authorise('core.edit.state', 'com_products');
+$saveOrder = $listOrder == 'a.ordering';
+
+if ($saveOrder)
+{
+	$saveOrderingUrl = 'index.php?option=com_products&task=payments.saveOrderAjax&tmpl=component';
+	JHtml::_('sortablelist.sortable', 'paymentList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+}
 
 $sortFields = $this->getSortFields();
 ?>
@@ -32,14 +39,14 @@ $sortFields = $this->getSortFields();
 		direction = document.getElementById("directionTable");
 		order = table.options[table.selectedIndex].value;
 		if (order != '<?php echo $listOrder; ?>') {
-			dirn = 'desc';
+			dirn = 'asc';
 		} else {
 			dirn = direction.options[direction.selectedIndex].value;
 		}
 		Joomla.tableOrdering(order, dirn, '');
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_products&view=orders'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_products&view=payments'); ?>" method="post" name="adminForm" id="adminForm">
 <?php if(!empty( $this->sidebar)): ?>
 	<div id="j-sidebar-container" class="span2">
 		<?php echo $this->sidebar; ?>
@@ -78,26 +85,20 @@ $sortFields = $this->getSortFields();
 			</div>
 		</div>
 		<div class="clearfix"></div>
-		<table class="table table-striped" id="orderList">
+		<table class="table table-striped" id="paymentList">
 			<thead>
 				<tr>
+					<th width="1%" class="nowrap center hidden-phone">
+						<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+					</th>
 					<th width="1%" class="hidden-phone">
 						<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 					</th>
-					<th width="5%" class="nowrap hidden-phone">
-						<?php echo JHtml::_('grid.sort', 'JGLOBAL_CREATED', 'a.created', $listDirn, $listOrder); ?>
+					<th width="1%" class="nowrap center">
+						<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 					</th>
 					<th class="title">
-						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_CLIENT', 'u.name', $listDirn, $listOrder); ?>
-					</th>
-					<th width="5%" class="nowrap hidden-phone">
-						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_STATUS', 'a.status', $listDirn, $listOrder); ?>
-					</th>
-					<th width="5%" class="nowrap center hidden-phone">
-						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_PRODUCTS', 'COUNT(oi.order_id)', $listDirn, $listOrder); ?>
-					</th>
-					<th width="10%" class="nowrap hidden-phone">
-						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_PAYMENT', 'a.payment_id', $listDirn, $listOrder); ?>
+						<?php echo JHtml::_('grid.sort', 'COM_PRODUCTS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
 					</th>
 					<th width="1%" class="nowrap center hidden-phone">
 						<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
@@ -113,54 +114,43 @@ $sortFields = $this->getSortFields();
 			</tfoot>
 			<tbody>
 			<?php foreach ($this->items as $i => $item) :
+				$ordering   = ($listOrder == 'a.ordering');
 				$canCreate  = $user->authorise('core.create',     'com_products');
 				$canEdit    = $user->authorise('core.edit',       'com_products');
-				$canCheckin = $user->authorise('core.manage',     'com_checkin');
-				$canChange  = $user->authorise('core.edit.state', 'com_products') && $canCheckin;
+				$canChange  = $user->authorise('core.edit.state', 'com_products');
 				?>
 				<tr class="row<?php echo $i % 2; ?>">
+					<td class="order nowrap center hidden-phone">
+						<?php if ($canChange):
+							$disableClassName = '';
+							$disabledLabel    = '';
+
+							if (!$saveOrder):
+								$disabledLabel    = JText::_('JORDERINGDISABLED');
+								$disableClassName = 'inactive tip-top';
+							endif; ?>
+							<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">
+								<i class="icon-menu"></i>
+							</span>
+							<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
+						<?php else: ?>
+							<span class="sortable-handler inactive" >
+								<i class="icon-menu"></i>
+							</span>
+						<?php endif; ?>
+					</td>
 					<td class="center hidden-phone">
 						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 					</td>
-					<td class="small nowrap hidden-phone">
-						<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC2')); ?>
+					<td class="center hidden-phone">
+						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'payments.', $canChange, 'cb'); ?>
 					</td>
 					<td class="nowrap">
 						<?php if ($canEdit): ?>
-							<a href="<?php echo JRoute::_('index.php?option=com_products&task=order.edit&id=' . (int) $item->id); ?>"><?php echo $this->escape($item->user_name); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option=com_products&task=payment.edit&id=' . (int) $item->id); ?>"><?php echo $this->escape($item->name); ?></a>
 						<?php else: ?>
-							<?php echo $this->escape($item->user_name); ?>
+							<?php echo $this->escape($item->name); ?>
 						<?php endif; ?>
-					</td>
-					<td class="small nowrap hidden-phone">
-						<?php
-						switch ($item->status)
-						{
-							case '1':
-								echo JText::_('COM_PRODUCTS_OPTION_APPROVED');
-								break;
-
-							case '2':
-								echo JText::_('COM_PRODUCTS_OPTION_NOT_APPROVED');
-								break;
-
-							case '3':
-								echo JText::_('COM_PRODUCTS_OPTION_CANCELED');
-								break;
-
-							case '0':
-							default:
-								echo JText::_('COM_PRODUCTS_OPTION_PENDING');
-								break;
-						}
-						?>
-					</td>
-					<td class="small center nowrap hidden-phone">
-						<?php echo $this->escape($item->nproducts); ?>
-						<?php echo JText::sprintf('COM_PRODUCTS_ITEMS_NUMBER', $item->nitems); ?>
-					</td>
-					<td class="small nowrap hidden-phone">
-						<?php echo $this->escape($item->payment_name); ?>
 					</td>
 					<td class="center hidden-phone">
 						<?php echo (int) $item->id; ?>

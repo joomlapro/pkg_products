@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="details" addfieldpath="/administrator/components/com_products/models/fields">
+		<field name="id" type="text" default="0" readonly="true" class="readonly" label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC" />
+		<field name="status" type="status" label="COM_PRODUCTS_FIELD_STATUS_LABEL" description="COM_PRODUCTS_FIELD_STATUS_DESC">
+			<option value="">JSELECT</option>
+		</field>
+		<field name="payment_id" type="payment" label="COM_PRODUCTS_FIELD_PAYMENT_LABEL" description="COM_PRODUCTS_FIELD_PAYMENT_DESC">
+			<option value="">JSELECT</option>
+		</field>
+		<field name="observations" type="editor" buttons="true" hide="pagebreak,readmore" class="inputbox" filter="JComponentHelper::filterText" label="COM_PRODUCTS_FIELD_OBSERVATIONS_LABEL" description="COM_PRODUCTS_FIELD_OBSERVATIONS_DESC" />
+	</fieldset>
+	<fieldset name="publish" label="JGLOBAL_FIELDSET_PUBLISHING">
+		<field name="created" type="calendar" class="inputbox" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc" label="JGLOBAL_FIELD_CREATED_LABEL" description="JGLOBAL_FIELD_CREATED_DESC" />
+		<field name="created_by" type="user" label="JGLOBAL_FIELD_CREATED_BY_LABEL" description="JGLOBAL_FIELD_CREATED_BY_Desc" />
+		<field name="modified" type="calendar" class="readonly" size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc" label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_PRODUCTS_FIELD_MODIFIED_DESC" />
+		<field name="modified_by" type="user" class="readonly" readonly="true" filter="unset" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL" description="COM_PRODUCTS_FIELD_MODIFIED_BY_DESC" />
+	</fieldset>
+</form>

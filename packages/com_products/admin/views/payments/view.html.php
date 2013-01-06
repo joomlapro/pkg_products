@@ -10,13 +10,13 @@
 defined('_JEXEC') or die;
 
 /**
- * View class for a list of orders.
+ * View class for a list of payments.
  *
  * @package     Products
  * @subpackage  com_products
  * @since       3.0
  */
-class ProductsViewOrders extends JViewLegacy
+class ProductsViewPayments extends JViewLegacy
 {
 	protected $items;
 
@@ -48,7 +48,7 @@ class ProductsViewOrders extends JViewLegacy
 		}
 
 		// Load the submenu.
-		ProductsHelper::addSubmenu('orders');
+		ProductsHelper::addSubmenu('payments');
 
 		$this->addToolbar();
 		$this->sidebar = JHtmlSidebar::render();
@@ -73,34 +73,33 @@ class ProductsViewOrders extends JViewLegacy
 		$canDo = ProductsHelper::getActions();
 		$user  = JFactory::getUser();
 
-		JToolbarHelper::title(JText::_('COM_PRODUCTS_MANAGER_ORDERS'), 'orders.png');
+		JToolbarHelper::title(JText::_('COM_PRODUCTS_MANAGER_PAYMENTS'), 'payments.png');
 
 		if ($canDo->get('core.create'))
 		{
-			JToolbarHelper::addNew('order.add');
+			JToolbarHelper::addNew('payment.add');
 		}
 
 		if ($canDo->get('core.edit'))
 		{
-			JToolbarHelper::editList('order.edit');
+			JToolbarHelper::editList('payment.edit');
 		}
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::publish('orders.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('orders.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::publish('payments.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('payments.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 
-			JToolbarHelper::archiveList('orders.archive');
-			JToolbarHelper::checkin('orders.checkin');
+			JToolbarHelper::archiveList('payments.archive');
 		}
 
 		if ($state->get('filter.state') == -2 && $canDo->get('core.delete'))
 		{
-			JToolbarHelper::deleteList('', 'orders.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolbarHelper::deleteList('', 'payments.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::trash('orders.trash');
+			JToolbarHelper::trash('payments.trash');
 		}
 
 		if ($canDo->get('core.admin'))
@@ -108,9 +107,15 @@ class ProductsViewOrders extends JViewLegacy
 			JToolbarHelper::preferences('com_products');
 		}
 
-		JToolBarHelper::help('orders', $com = true);
+		JToolBarHelper::help('payments', $com = true);
 
-		JHtmlSidebar::setAction('index.php?option=com_products&view=orders');
+		JHtmlSidebar::setAction('index.php?option=com_products&view=payments');
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_state',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+		);
 	}
 
 	/**
@@ -123,11 +128,9 @@ class ProductsViewOrders extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-			'a.created' => JText::_('JGLOBAL_CREATED'),
-			'u.name' => JText::_('COM_PRODUCTS_HEADING_CLIENT'),
-			'a.status' => JText::_('COM_PRODUCTS_HEADING_STATUS'),
-			'COUNT(oi.order_id)' => JText::_('COM_PRODUCTS_HEADING_PRODUCTS'),
-			'a.payment_id' => JText::_('COM_PRODUCTS_HEADING_PAYMENT'),
+			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+			'a.state' => JText::_('JSTATUS'),
+			'a.name' => JText::_('COM_PRODUCTS_HEADING_NAME'),
 			'a.id' => JText::_('JGRID_HEADING_ID')
 		);
 	}

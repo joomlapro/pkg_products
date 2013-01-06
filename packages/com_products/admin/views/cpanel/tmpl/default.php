@@ -23,6 +23,7 @@ $user = JFactory::getUser();
 				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=clients"><?php echo JText::_('COM_PRODUCTS_LINK_CLIENTS'); ?></a></li>
 				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=fields"><?php echo JText::_('COM_PRODUCTS_LINK_FIELDS'); ?></a></li>
 				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=activities"><?php echo JText::_('COM_PRODUCTS_LINK_ACTIVITIES'); ?></a></li>
+				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_products&amp;view=payments"><?php echo JText::_('COM_PRODUCTS_LINK_PAYMENTS'); ?></a></li>
 				<li><a href="<?php echo $this->baseurl; ?>/index.php?option=com_categories&amp;extension=com_products"><?php echo JText::_('COM_PRODUCTS_LINK_CATEGORIES'); ?></a></li>
 			</ul>
 		</div>

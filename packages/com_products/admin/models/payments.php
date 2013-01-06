@@ -10,13 +10,13 @@
 defined('_JEXEC') or die;
 
 /**
- * Methods supporting a list of order records.
+ * Methods supporting a list of payment records.
  *
  * @package     Products
  * @subpackage  com_products
  * @since       3.0
  */
-class ProductsModelOrders extends JModelList
+class ProductsModelPayments extends JModelList
 {
 	/**
 	 * Constructor.
@@ -32,12 +32,9 @@ class ProductsModelOrders extends JModelList
 		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
-				'name', 'u.name',
-				'COUNT(oi.order_id)',
-				'status', 'a.status',
-				'payment_id', 'a.payment_id',
-				'created', 'a.created',
-				'created_by', 'a.created_by',
+				'name', 'a.name',
+				'state', 'a.state',
+				'ordering', 'a.ordering',
 			);
 		}
 
@@ -72,12 +69,15 @@ class ProductsModelOrders extends JModelList
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
+		$published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+		$this->setState('filter.state', $published);
+
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_products');
 		$this->setState('params', $params);
 
 		// List state information.
-		parent::populateState('a.created', 'desc');
+		parent::populateState('a.name', 'asc');
 	}
 
 	/**
@@ -97,6 +97,7 @@ class ProductsModelOrders extends JModelList
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.state');
 
 		return parent::getStoreId($id);
 	}
@@ -119,23 +120,23 @@ class ProductsModelOrders extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.status, a.payment_id' .
-				', a.created'
+				'a.id, a.name' .
+				', a.state, a.ordering'
 			)
 		);
-		$query->from($db->quoteName('#__products_orders') . ' AS a');
+		$query->from($db->quoteName('#__products_payments') . ' AS a');
 
-		// Join over the items.
-		$query->select('SUM(oi.qty) AS nitems, COUNT(oi.product_id) AS nproducts');
-		$query->join('LEFT', $db->quoteName('#__products_orders_items') . ' AS oi ON a.id = oi.order_id');
+		// Filter by published state
+		$published = $this->getState('filter.state');
 
-		// Join over the users.
-		$query->select('u.name AS user_name');
-		$query->join('LEFT', $db->quoteName('#__users') . ' AS u ON u.id = a.user_id');
-
-		// Join over the payments.
-		$query->select('p.name AS payment_name');
-		$query->join('LEFT', $db->quoteName('#__products_payments') . ' AS p ON p.id = a.payment_id');
+		if (is_numeric($published))
+		{
+			$query->where('a.state = ' . (int) $published);
+		}
+		elseif ($published === '')
+		{
+			$query->where('(a.state IN (0, 1))');
+		}
 
 		// Filter by search in name.
 		$search = $this->getState('filter.search');
@@ -149,15 +150,13 @@ class ProductsModelOrders extends JModelList
 			else
 			{
 				$search = $db->quote('%' . $db->escape($search, true) . '%');
-				$query->where('(a.observations LIKE ' . $search . ')');
+				$query->where('(a.name LIKE ' . $search . ')');
 			}
 		}
 
-		$query->group('a.id, a.status, a.payment_id');
-
 		// Add the list ordering clause.
-		$orderCol = $this->getState('list.ordering', 'a.created');
-		$query->order($db->escape($orderCol) . ' ' . $db->escape($this->getState('list.direction', 'DESC')));
+		$orderCol = $this->getState('list.ordering', 'a.name');
+		$query->order($db->escape($orderCol) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 
 		// echo nl2br(str_replace('#__', 'jos_', $query));
 

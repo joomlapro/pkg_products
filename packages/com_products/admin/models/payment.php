@@ -10,13 +10,13 @@
 defined('_JEXEC') or die;
 
 /**
- * Order model.
+ * Payment model.
  *
  * @package     Products
  * @subpackage  com_products
  * @since       3.0
  */
-class ProductsModelOrder extends JModelAdmin
+class ProductsModelPayment extends JModelAdmin
 {
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -29,7 +29,7 @@ class ProductsModelOrder extends JModelAdmin
 	 *
 	 * @since   3.0
 	 */
-	public function getTable($type = 'Order', $prefix = 'ProductsTable', $config = array())
+	public function getTable($type = 'Payment', $prefix = 'ProductsTable', $config = array())
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -47,11 +47,24 @@ class ProductsModelOrder extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_products.order', 'order', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_products.payment', 'payment', array('control' => 'jform', 'load_data' => $loadData));
 
 		if (empty($form))
 		{
 			return false;
+		}
+
+		// Modify the form based on access controls.
+		if (!$this->canEditState((object) $data))
+		{
+			// Disable fields for display.
+			$form->setFieldAttribute('ordering', 'disabled', 'true');
+			$form->setFieldAttribute('state', 'disabled', 'true');
+
+			// Disable fields while saving.
+			// The controller has already verified this is a record you can edit.
+			$form->setFieldAttribute('ordering', 'filter', 'unset');
+			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
 
 		return $form;
@@ -67,7 +80,7 @@ class ProductsModelOrder extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_products.edit.order.data', array());
+		$data = JFactory::getApplication()->getUserState('com_products.edit.payment.data', array());
 
 		if (empty($data))
 		{
@@ -92,11 +105,35 @@ class ProductsModelOrder extends JModelAdmin
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
 
+		$table->name = htmlspecialchars_decode($table->name, ENT_QUOTES);
+
 		if (empty($table->id))
 		{
 			// Set the values
-			$table->modified    = $date->toSql();
-			$table->modified_by = $user->get('id');
+
+			// Set ordering to the last item if not set
+			if (empty($table->ordering))
+			{
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT MAX(ordering) FROM #__products_payments');
+				$max = $db->loadResult();
+
+				$table->ordering = $max + 1;
+			}
 		}
+	}
+
+	/**
+	 * Method to check-out a row for editing.
+	 *
+	 * @param   integer  $pk  The numeric id of the primary key.
+	 *
+	 * @return  boolean  False on failure or error, true otherwise.
+	 *
+	 * @since   3.0
+	 */
+	public function checkout($pk = null)
+	{
+		return true;
 	}
 }

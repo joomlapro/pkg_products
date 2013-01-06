@@ -55,6 +55,7 @@
 			<menu link="option=com_products&amp;view=clients" view="clients" img="class:clients" alt="Products/Clients">com_products_clients</menu>
 			<menu link="option=com_products&amp;view=fields" view="fields" img="class:fields" alt="Products/Fields">com_products_fields</menu>
 			<menu link="option=com_products&amp;view=activities" view="activities" img="class:activities" alt="Products/Activities">com_products_activities</menu>
+			<menu link="option=com_products&amp;view=payments" view="payments" img="class:payments" alt="Products/Payments">com_products_payments</menu>
 			<menu link="option=com_categories&amp;extension=com_products" view="categories" img="class:category" alt="Products/Categories">com_products_categories</menu>
 		</submenu>
 		<files folder="admin">

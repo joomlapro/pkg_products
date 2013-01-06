@@ -10,13 +10,13 @@
 defined('_JEXEC') or die;
 
 /**
- * View to edit a order.
+ * View to edit a payment.
  *
  * @package     Products
  * @subpackage  com_products
  * @since       3.0
  */
-class ProductsViewOrder extends JViewLegacy
+class ProductsViewPayment extends JViewLegacy
 {
 	protected $form;
 
@@ -71,36 +71,36 @@ class ProductsViewOrder extends JViewLegacy
 		// Since we don't track these assets at the item level.
 		$canDo      = ProductsHelper::getActions();
 
-		JToolbarHelper::title($isNew ? JText::_('COM_PRODUCTS_MANAGER_ORDER_NEW') : JText::_('COM_PRODUCTS_MANAGER_ORDER_EDIT'), 'order.png');
+		JToolbarHelper::title($isNew ? JText::_('COM_PRODUCTS_MANAGER_PAYMENT_NEW') : JText::_('COM_PRODUCTS_MANAGER_PAYMENT_EDIT'), 'payment.png');
 
-		// If not checked out, can save the item.
+		// Can save the item.
 		if ($canDo->get('core.edit'))
 		{
-			JToolbarHelper::apply('order.apply');
-			JToolbarHelper::save('order.save');
+			JToolbarHelper::apply('payment.apply');
+			JToolbarHelper::save('payment.save');
 		}
 
 		if ($canDo->get('core.create'))
 		{
-			JToolbarHelper::save2new('order.save2new');
+			JToolbarHelper::save2new('payment.save2new');
 		}
 
 		// If an existing item, can save to a copy.
 		if (!$isNew && $canDo->get('core.create'))
 		{
-			JToolbarHelper::save2copy('order.save2copy');
+			JToolbarHelper::save2copy('payment.save2copy');
 		}
 
 		if (empty($this->item->id))
 		{
-			JToolbarHelper::cancel('order.cancel');
+			JToolbarHelper::cancel('payment.cancel');
 		}
 		else
 		{
-			JToolbarHelper::cancel('order.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('payment.cancel', 'JTOOLBAR_CLOSE');
 		}
 
 		JToolbarHelper::divider();
-		JToolBarHelper::help('order', $com = true);
+		JToolBarHelper::help('payment', $com = true);
 	}
 }

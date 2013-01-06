@@ -66,6 +66,12 @@ class ProductsHelper
 		);
 
 		JHtmlSidebar::addEntry(
+			JText::_('COM_PRODUCTS_SUBMENU_PAYMENTS'),
+			'index.php?option=com_products&view=payments',
+			$vName == 'payments'
+		);
+
+		JHtmlSidebar::addEntry(
 			JText::_('COM_PRODUCTS_SUBMENU_CATEGORIES'),
 			'index.php?option=com_categories&extension=com_products',
 			$vName == 'categories'
@@ -178,6 +184,60 @@ class ProductsHelper
 		{
 			JError::raiseWarning(500, $e->getMessage());
 		}
+
+		return $options;
+	}
+
+	/**
+	 * Get a list of filter options for the payments.
+	 *
+	 * @return  array  An array of JHtmlOption elements.
+	 *
+	 * @return  3.0
+	 */
+	public static function getPaymentOptions()
+	{
+		// Initialize variables.
+		$options = array();
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('a.id AS value, a.name AS text');
+		$query->from($db->quoteName('#__products_payments') . ' AS a');
+		$query->order('a.ordering');
+
+		// Get the options.
+		$db->setQuery($query);
+
+		try
+		{
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(500, $e->getMessage());
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Get a list of filter options for the status.
+	 *
+	 * @return  array  An array of JHtmlOption elements.
+	 *
+	 * @since   3.0
+	 */
+	public static function getStatusOptions()
+	{
+		// Build the filter options.
+		$options = array();
+
+		$options[] = JHtml::_('select.option', '0', JText::_('COM_PRODUCTS_OPTION_PENDING'));
+		$options[] = JHtml::_('select.option', '1', JText::_('COM_PRODUCTS_OPTION_APPROVED'));
+		$options[] = JHtml::_('select.option', '2', JText::_('COM_PRODUCTS_OPTION_NOT_APPROVED'));
+		$options[] = JHtml::_('select.option', '3', JText::_('COM_PRODUCTS_OPTION_CANCELED'));
 
 		return $options;
 	}

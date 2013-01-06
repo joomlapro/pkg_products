@@ -10,17 +10,17 @@
 defined('_JEXEC') or die;
 
 /**
- * Order controller class.
+ * Payment controller class.
  *
  * @package     Products
  * @subpackage  com_products
  * @since       3.0
  */
-class ProductsControllerOrder extends JControllerForm
+class ProductsControllerPayment extends JControllerForm
 {
 	/**
 	 * @var     string  The prefix to use with controller messages.
 	 * @since   3.0
 	 */
-	protected $text_prefix = 'COM_PRODUCTS_ORDER';
+	protected $text_prefix = 'COM_PRODUCTS_PAYMENT';
 }
