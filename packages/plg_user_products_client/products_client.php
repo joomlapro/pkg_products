@@ -55,6 +55,9 @@ class PlgUserProducts_Client extends JPlugin
 	 */
 	public function onContentPrepareData($context, $data)
 	{
+		// Load the backend helper.
+		require_once JPATH_ADMINISTRATOR . '/components/com_products/helpers/mask.php';
+
 		// Check we are manipulating a valid form.
 		if (!in_array($context, array('com_users.profile', 'com_users.user', 'com_users.registration', 'com_admin.profile')))
 		{
@@ -85,6 +88,13 @@ class PlgUserProducts_Client extends JPlugin
 
 				// Format birthday.
 				$data->profile['birthday'] = preg_replace('/(\d{4})-(\d{2})-(\d{2})/', "\\3-\\2-\\1", $data->profile['birthday']);
+
+				// Mask.
+				$data->profile['cpf']             = MaskHelper::mask($data->profile['cpf'], 'cpf');
+				$data->profile['phone']           = MaskHelper::mask($data->profile['phone'], 'phone');
+				$data->profile['mobile']          = MaskHelper::mask($data->profile['mobile'], 'phone');
+				$data->profile['address_zipcode'] = MaskHelper::mask($data->profile['address_zipcode'], 'zip');
+				$data->profile['cnpj']            = MaskHelper::mask($data->profile['cnpj'], 'cnpj');
 			}
 
 			if (!JHtml::isRegistered('users.url'))
@@ -420,6 +430,13 @@ class PlgUserProducts_Client extends JPlugin
 
 					// Format birthday.
 					$data['profile']['birthday'] = preg_replace('/(\d{2})\/(\d{2})\/(\d{4})/', "\\3-\\2-\\1", $data['profile']['birthday']);
+
+					// Store only numbers.
+					$data['profile']['cpf']             = preg_replace('/[^\d]/', '', $data['profile']['cpf']);
+					$data['profile']['phone']           = preg_replace('/[^\d]/', '', $data['profile']['phone']);
+					$data['profile']['mobile']          = preg_replace('/[^\d]/', '', $data['profile']['mobile']);
+					$data['profile']['address_zipcode'] = preg_replace('/[^\d]/', '', $data['profile']['address_zipcode']);
+					$data['profile']['cnpj']            = preg_replace('/[^\d]/', '', $data['profile']['cnpj']);
 
 					// Iterate over the object variables to build the query fields and values.
 					foreach ($data['profile'] as $k => $v)
